@@ -25,7 +25,17 @@ Trình biên dịch (compiler) trong C/C++ là công cụ chuyển đổi mã ng
 ![image](https://github.com/user-attachments/assets/0be42d81-2bbe-46ab-bd03-5a33ea52881b)
 ###### Như vậy chúng ta đã tạo ra 3 biến khác nhau
 ##### 1.2 Variadic Macro
+###### Variadic Macro là một macro có thể nhận số lượng tham số tùy ý, được định nghĩa bằng dấu "..." Các tham số này được truy cập bằng toán tử __VA_ARGS__.
 
+
+
+
+
+
+
+![image](https://github.com/user-attachments/assets/a930012a-b379-47ef-be89-674fd60d8b33)
+![image](https://github.com/user-attachments/assets/47c6db11-aa44-480f-a050-77fa75c98eac)
+###### Như vậy chúng ta nhập bao nhiêu số sẽ tính tổng các số
 
 ##### Nếu có include thì sẽ copy các source của include vào
 ##### Sử dụng macro sẽ copy nội dung được định nghĩa vào
