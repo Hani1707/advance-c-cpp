@@ -66,6 +66,12 @@ Trình biên dịch (compiler) trong C/C++ là công cụ chuyển đổi mã ng
 #### Linker là gộp những file object lại thành file cuối cùng sẽ tạo ra executable file
 #### gcc test1.o test2.o -o main
 ./main
+# Bài 2: STDARG - ASSERT 
+## 1.	Stdarg Thư viện stdarg.h trong C cung cấp các macro để xử lý các hàm có số lượng đối số không xác định. Nó cho phép bạn viết các hàm có thể nhận bất kỳ số lượng đối số nào, chẳng hạn như printf.
+### Va_list: được sử dụng để khai báo một biến mà có thể lưu trữ và truy cập các đối số không cố định của một hàm
+### Va_start: dùng để khởi tạo một biến kiểu va_list trước khi truy cập các đối số không cố định của một hàm. Nó cần tham số là đối số cố định cuối cùng của hàm để xác định vị trí bắt đầu của các đối số không cố định. 
+### Va_arg: Lấy đối số tiếp theo trong danh sách 
+### Va_end: được sử dụng để kết thúc việc truy cập các đối số không cố định của một hàm. Nó cần được gọi trước khi kết thúc hàm
 
 
 
