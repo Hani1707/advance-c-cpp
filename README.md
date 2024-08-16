@@ -86,7 +86,7 @@ float *ptr_float;  // con trỏ đến kiểu float
 ```bash
 #include <stdio.h>
 
-int a = 10;
+int a = 20;
 
 int *ptr = &a;
 
@@ -95,6 +95,11 @@ int main(int argc, char const *argv[]){
     printf("gia tri ptr: %p\n", ptr);
     return 0;
 }
+```
+Output:
+```bash
+dia chi a: 00007FF68E0D3000
+gia tri ptr: 00007FF68E0D3000
 ```
 ## Các loại con trỏ:
 ### 1. Function pointer: Function pointer (con trỏ hàm) là một biến lưu trữ địa chỉ của một hàm. Nó cho phép gọi hàm thông qua con trỏ, tức là có thể gọi hàm mà không cần biết tên cụ thể của hàm đó, chỉ cần biết địa chỉ của nó. Con trỏ hàm rất hữu ích khi cần linh hoạt trong việc gọi các hàm khác nhau tại runtime.
@@ -131,7 +136,12 @@ int main(int argc, char const *argv[])
     return 0;
 }
 ```
-#### Con trỏ kiểu trả về như thế nào thì sẽ trỏ đến nhứng hàm đó
+Output:
+```bash
+Tong 7 va 7: 14
+```
+
+#### Con trỏ kiểu trả về như thế nào thì sẽ trỏ đến hàm đó
 #### Ví dụ:
 ```bash
 #include <stdio.h>
@@ -169,7 +179,196 @@ int main(int argc, char const *argv[])
     return 0;
 }
 ```
+Output:
+```bash
+Tich: 49
+```
 Con trỏ ở bài này kiểu trả về là int nên sẽ trỏ đến hàm int
+#### Có thể tạo ra một mảng để lưu các địa chỉ của các Function pointer (con trỏ hàm) 
+#### Ví dụ:
+```bash
+#include <stdio.h>
+#include <assert.h>
+
+void tong(int a, int b){  // 0xc1 - 0xc9
+    printf("Tong %d va %d: %d\n", a, b, a + b);
+}
+
+void hieu(int a, int b){
+    printf("Hieu %d va %d: %d\n", a, b, a - b);
+}
+
+void tich(int a, int b){
+    printf("Tich %d va %d: %d\n", a, b, a * b);
+}
+
+void thuong(int a, int b){
+    assert(b != 0);
+    printf("Thuong %d va %d: %f\n", a, b, (double)a / b);
+}
+int main(int argc, char const *argv[])
+{
+    void (*array[4])(int, int) = {&tong, &hieu, &tich, &thuong};
+
+    array[0](5, 5);
+    array[2](7, 7);
+
+    return 0;
+}
+```
+Output:
+```bash
+Tong 5 va 5: 10
+Tich 7 va 7: 49
+```
+#### Ứng dụng Function pointer (con trỏ hàm) khi tham số truyền vào là một hàm:
+#### Ví dụ:
+```bash
+#include <stdio.h>
+#include <assert.h>
+
+void tong(int a, int b){  
+    printf("Tong %d va %d: %d\n", a, b, a + b);
+}
+
+void hieu(int a, int b){
+    printf("Hieu %d va %d: %d\n", a, b, a - b);
+}
+
+void tich(int a, int b){
+    printf("Tich %d va %d: %d\n", a, b, a * b);
+}
+
+void thuong(int a, int b){
+    assert(b != 0);
+    printf("Thuong %d va %d: %f\n", a, b, (double)a / b);
+}
+void tinhToan(void (*ptr)(int, int), int a, int b){
+    printf("Thuc hien phep toan duoi:\n");
+    ptr(a, b);
+}
+
+int main(int argc, char const *argv[])
+{
+    tinhToan(&tich, 5, 5);
+    tinhToan(&thuong, 7, 7);
+
+    return 0;
+}
+```
+Output:
+```bash
+Thuc hien phep toan duoi:
+Tich 5 va 5: 25
+Thuc hien phep toan duoi:
+Thuong 7 va 7: 1.000000
+```
+### 2. Void pointer: Void pointer (con trỏ void) là một loại con trỏ có thể trỏ đến bất kỳ kiểu dữ liệu nào. Vì nó không có kiểu dữ liệu cụ thể, bạn không thể truy xuất hoặc thao tác trực tiếp với giá trị mà nó trỏ đến mà không cần phải ép kiểu (type-casting) sang con trỏ của kiểu dữ liệu cụ thể trước. Con trỏ void rất linh hoạt và thường được sử dụng trong các hàm mà loại dữ liệu cụ thể của tham số chưa được biết trước
+#### Cách khai báo:
+```bash
+void *ptr_void;
+```
+#### Ví dụ:
+```bash
+#include <stdio.h>
+int main(int argc, char const *argv[])
+{
+    int a = 10;
+    char c = 'A';
+    double d = 10.3;
+    void *ptr = &a;
+
+    printf("Gia tri: %p\n", ptr);
+
+    ptr = &c;
+
+    printf("Gia tri: %p\n", ptr);
+
+    ptr = &d;
+
+    printf("Gia tri: %p\n", ptr);
+
+    return 0;
+}
+```
+Output:
+```bash
+Gia tri: 00000053235FFE24
+Gia tri: 00000053235FFE23
+Gia tri: 00000053235FFE18
+```
+#### Void pointer (con trỏ void) có thể trỏ đến địa chỉ nhưng không thể in ra giá trị của địa chỉ vì không xác định được kiểu dữ liệu của giá trị địa chỉ nên nếu muốn in giá trị địa chỉ thì phải thêm kiểu giá trị 
+#### Ví dụ:
+```bash
+#include <stdio.h>
+#include <assert.h>
+
+void tong(int a, int b){  
+    printf("Tong %d va %d: %d\n", a, b, a + b);
+}
+
+void hieu(int a, int b){
+    printf("Hieu %d va %d: %d\n", a, b, a - b);
+}
+
+void tich(int a, int b){
+    printf("Tich %d va %d: %d\n", a, b, a * b);
+}
+
+void thuong(int a, int b){
+    assert(b != 0);
+    printf("Thuong %d va %d: %f\n", a, b, (double)a / b);
+}
+void tinhToan(void (*ptr)(int, int), int a, int b){
+    printf("Thuc hien phep toan duoi:\n");
+    ptr(a, b);
+}
+
+int main(int argc, char const *argv[])
+{
+    int a = 20;
+    char c = 'H';
+    double d = 20.5;
+
+    void *ptr = &a;
+
+    printf("Gia tri: %p\n", ptr);
+    printf("Gia tri a: %d\n", *(int *)ptr);
+
+    ptr = &c;
+
+    printf("Gia tri: %p\n", ptr);
+    printf("Gia tri c: %c\n", *(char *)ptr);
+
+    ptr = &d;
+
+    printf("Gia tri: %p\n", ptr);
+    printf("Gia tri d: %f\n", *(double *)ptr);
+
+    ptr = &tich;
+
+    printf("Gia tri: %p\n", ptr);
+    ((void(*)(int, int))ptr)(7, 7);
+
+    return 0;
+}
+
+
+```
+Output:
+```bash
+Gia tri: 00000001001FFD24
+Gia tri a: 20
+Gia tri: 00000001001FFD23
+Gia tri c: H
+Gia tri: 00000001001FFD18
+Gia tri d: 20.500000
+Gia tri: 00007FF6106E14C5
+Tich 7 va 7: 49
+```
+
+
+
 
 
 
