@@ -74,6 +74,106 @@ Trình biên dịch (compiler) trong C/C++ là công cụ chuyển đổi mã ng
 ### Va_end: được sử dụng để kết thúc việc truy cập các đối số không cố định của một hàm. Nó cần được gọi trước khi kết thúc hàm
 ## 2. Thư viện assert:
 ### Thư viện assert cung cấp macro assert để kiểm tra các điều kiện tại thời điểm chạy chương trình. Nếu điều kiện kiểm tra là sai, chương trình sẽ dừng thực thi và hiển thị thông báo lỗi với thông tin về tệp tin và dòng mã nơi xảy ra lỗi. assert chủ yếu được sử dụng trong quá trình gỡ lỗi để đảm bảo các điều kiện tiên quyết được đáp ứng.
+# Bài 3: Pointer
+##  Pointer là một biến lưu trữ địa chỉ của một biến khác. Pointer không lưu giá trị trực tiếp mà lưu trữ địa chỉ của vùng nhớ nơi giá trị đó được lưu trữ. Điều này cho phép thao tác trực tiếp với vùng nhớ, truy cập và thay đổi giá trị của biến thông qua địa chỉ mà pointer trỏ tới.
+## Cách khai báo:
+```bash
+int *ptr;  // con trỏ đến kiểu int
+char *ptr_char;  // con trỏ đến kiểu char
+float *ptr_float;  // con trỏ đến kiểu float
+```
+## ví dụ:
+```bash
+#include <stdio.h>
+
+int a = 10;
+
+int *ptr = &a;
+
+int main(int argc, char const *argv[]){
+    printf("dia chi a: %p\n", &a);
+    printf("gia tri ptr: %p\n", ptr);
+    return 0;
+}
+```
+## Các loại con trỏ:
+### 1. Function pointer: Function pointer (con trỏ hàm) là một biến lưu trữ địa chỉ của một hàm. Nó cho phép gọi hàm thông qua con trỏ, tức là có thể gọi hàm mà không cần biết tên cụ thể của hàm đó, chỉ cần biết địa chỉ của nó. Con trỏ hàm rất hữu ích khi cần linh hoạt trong việc gọi các hàm khác nhau tại runtime.
+#### Ví dụ:
+```bash
+#include <stdio.h>
+#include <assert.h>
+
+void tong(int a, int b){
+    printf("Tong %d va %d: %d\n", a, b, a+b);
+}
+
+void hieu(int a, int b){
+    printf("Hieu %d va %d: %d\n", a, b, a-b);
+}
+
+void tich(int a, int b){
+    printf("Tich %d va %d: %d\n", a, b, a*b);
+}
+
+void thuong(int a, int b){
+    assert(b != 0);
+    printf("Thuong %d va %d: %f\n", a, b, (double)a/b);
+}
+
+int main(int argc, char const *argv[])
+{
+    void (*ptr)(int, int);
+
+    ptr = &tong;
+
+    ptr(7, 7);
+
+    return 0;
+}
+```
+#### Con trỏ kiểu trả về như thế nào thì sẽ trỏ đến nhứng hàm đó
+#### Ví dụ:
+```bash
+#include <stdio.h>
+#include <assert.h>
+
+void tong(int a, int b){
+    printf("Tong %d va %d: %d\n", a, b, a+b);
+}
+
+void hieu(int a, int b){
+    printf("Hieu %d va %d: %d\n", a, b, a-b);
+}
+
+int tich(int a, int b){
+    return a*b;
+}
+
+void thuong(int a, int b){
+    assert(b != 0);
+    printf("Thuong %d va %d: %f\n", a, b, (double)a/b);
+}
+
+int main(int argc, char const *argv[])
+{
+    void (*ptr)(int, int);
+
+    
+
+    int (*test)(int, int);
+
+    test = &tich;
+
+    printf("Tich: %d\n", test(7, 7));
+
+    return 0;
+}
+```
+Con trỏ ở bài này kiểu trả về là int nên sẽ trỏ đến hàm int
+
+
+
+
 
 
 
