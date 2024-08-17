@@ -377,7 +377,7 @@ const int *ptr;
 ```bash
 int *const ptr;
 ```
-#### 
+#### 6. 
 
 
 
