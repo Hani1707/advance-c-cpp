@@ -377,7 +377,11 @@ const int *ptr;
 ```bash
 int *const ptr;
 ```
-#### 6. 
+### 6. Pointer to Pointer: Pointer to Pointer (con trỏ trỏ tới con trỏ) là một con trỏ lưu trữ địa chỉ của một con trỏ khác. Nó cho phép bạn gián tiếp truy cập và thao tác với dữ liệu mà con trỏ ban đầu trỏ tới. Trong C/C++, pointer to pointer được khai báo bằng cách sử dụng hai dấu *.
+#### Cú pháp:
+```bash
+int **pp;
+```
 
 
 
