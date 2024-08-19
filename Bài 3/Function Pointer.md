@@ -6,7 +6,7 @@ typedef struct {
    int id;
 } SinhVien;
  ```
-`struct` à một kiểu dữ liệu tự định nghĩa bởi người dùng. Nó cho phép nhóm các biến có kiểu dữ liệu khác nhau lại với nhau dưới một tên chung. Trong trường hợp này, cấu trúc SinhVien được định nghĩa để lưu trữ thông tin của một sinh viên.
+`struct` là một kiểu dữ liệu tự định nghĩa bởi người dùng. Nó cho phép nhóm các biến có kiểu dữ liệu khác nhau lại với nhau dưới một tên chung. Trong trường hợp này, cấu trúc SinhVien được định nghĩa để lưu trữ thông tin của một sinh viên.
 
 Cấu trúc SinhVien đã gồm ba thành phần:
 
