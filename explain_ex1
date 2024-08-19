@@ -1,8 +1,0 @@
-# Định nghĩa một cấu trúc 'SinhVien'
-```bash
-typedef struct {
-   char ten[50];
-   float diemTrungBinh;
-   int id;
-} SinhVien;
-```
