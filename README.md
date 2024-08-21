@@ -485,7 +485,15 @@ int **pp;
 </details>
 
 # Bài 4: Extern - Static - Volatile
+
+<details><summary>Chi tiết</summary>
+<p>
+
 ## 1. Extern:
+
+<details><summary>Chi tiết</summary>
+<p>
+
 Extern: Có thể lấy được những biến toàn cục và những hàm toàn cục của những file.c khác kết nối đến file muốn sử dụng
 
 Ở file bai4.c
@@ -530,11 +538,18 @@ test.c : 10
 Test: 50
 test.c : 50
 ```
+</p>
+</details>
+
+
 ## 2. Static:
+
+<details><summary>Chi tiết</summary>
+<p>
 
 2.1: Static local variables:
 
-Static local variables (biến cục bộ tĩnh) là một biến được khai báo bên trong một hàm với từ khóa `static`. Biến chỉ được khởi tạo một lần duy nhất khi chương trình chạy, và giá trị của nó được giữ nguyên giữa các lần gọi hàm, thay vì bị hủy và khởi tạo lại mỗi khi hàm được gọi như biến cục bộ thông thường. Phạm vi của biến cục bộ tĩnh vẫn bị giới hạn trong hàm mà nó được khai báo, nhưng thời gian sống của nó kéo dài suốt quá trình thực thi của chương trình
+`Static local variables` (biến cục bộ tĩnh) là một biến được khai báo bên trong một hàm với từ khóa `static`. Biến chỉ được khởi tạo một lần duy nhất khi chương trình chạy, và giá trị của nó được giữ nguyên giữa các lần gọi hàm, thay vì bị hủy và khởi tạo lại mỗi khi hàm được gọi như biến cục bộ thông thường. Phạm vi của biến cục bộ tĩnh vẫn bị giới hạn trong hàm mà nó được khai báo, nhưng thời gian sống của nó kéo dài suốt quá trình thực thi của chương trình
 
 Ví dụ:
 ```bash
@@ -562,7 +577,8 @@ Hàm đã được gọi 2 lần
 Hàm đã được gọi 3 lần
 ```
 2.2: Static global variables:
- Static global variables (biến toàn cục tĩnh) là biến được khai báo ở phạm vi toàn cục (ngoài các hàm) với từ khóa `static`. Khác với biến toàn cục thông thường, biến toàn cục tĩnh có phạm vi chỉ giới hạn trong tệp tin (file) mà nó được khai báo, nghĩa là nó không thể được truy cập từ các tệp tin khác trong chương trình (ngay cả khi sử dụng từ khóa `extern`)
+
+ `Static global variables` (biến toàn cục tĩnh) là biến được khai báo ở phạm vi toàn cục (ngoài các hàm) với từ khóa `static`. Khác với biến toàn cục thông thường, biến toàn cục tĩnh có phạm vi chỉ giới hạn trong tệp tin (file) mà nó được khai báo, nghĩa là nó không thể được truy cập từ các tệp tin khác trong chương trình (ngay cả khi sử dụng từ khóa `extern`)
 
 - Phạm vi: Biến toàn cục tĩnh chỉ có phạm vi trong tệp tin mà nó được khai báo, giúp tránh việc bị truy cập hoặc sửa đổi ngoài ý muốn từ các tệp tin khác trong chương trình
 
@@ -597,11 +613,15 @@ So dem: 2
 So dem: 3
 ```
 
-
+</p>
+</details>
 
 
 
 ## 4. Register:
+
+<details><summary>Chi tiết</summary>
+<p>
 
 `Register` được sử dụng để khai báo một biến với gợi ý cho trình biên dịch rằng biến này sẽ được truy cập rất nhiều và nên được lưu trữ trong thanh ghi (register) của CPU thay vì trong bộ nhớ chính. Việc này có thể làm tăng hiệu suất chương trình bởi vì truy cập vào các thanh ghi nhanh hơn nhiều so với truy cập vào bộ nhớ
 
@@ -629,6 +649,12 @@ Kết quả:
 ```
   0 1 2 3 4 5 6 7 8 9
 ```
+</p>
+</details>
+
+</p>
+</details>
+
 
 
 
