@@ -616,7 +616,50 @@ So dem: 3
 </p>
 </details>
 
+## 3. Volatile
 
+<details><summary>Chi tiết</summary>
+<p>
+
+`Volatile` được sử dụng để khai báo một biến mà giá trị của nó có thể thay đổi mà không cần thông qua chương trình hiện tại. Điều này thường xảy ra trong các trường hợp khi biến có thể bị thay đổi bởi phần cứng, bởi một tín hiệu ngắt, hoặc bởi một luồng khác trong một chương trình đa luồng
+
+Ví dụ có một hệ thống nhúng với một nút nhấn kết nối với một chân GPIO của vi điều khiển. Khi nút được nhấn, một biến sẽ được cập nhật để báo hiệu cho chương trình chính rằng có một sự kiện xảy ra:
+```bash
+#include <stdio.h>
+
+// Biến để theo dõi trạng thái của nút nhấn
+volatile int buttonPressed = 0;
+
+// Hàm giả lập ngắt từ GPIO khi nút nhấn được bấm
+void gpio_interrupt_handler() {
+    // Ngắt xảy ra khi nút nhấn được bấm, cập nhật biến buttonPressed
+    buttonPressed = 1;
+}
+
+int main() {
+    // Cấu hình ngắt GPIO và các thiết lập khác
+
+    // Chờ cho đến khi nút nhấn được bấm
+    while (buttonPressed == 0) {
+        // Vòng lặp liên tục kiểm tra biến buttonPressed
+        // Do buttonPressed là volatile, giá trị sẽ luôn được đọc từ bộ nhớ
+        // và không bị trình biên dịch tối ưu hóa
+    }
+
+    // Khi nút nhấn được bấm (buttonPressed == 1), tiếp tục thực hiện công việc
+    printf("Button pressed!\n");
+
+    // Sau khi xử lý, có thể reset lại buttonPressed để chờ lần nhấn tiếp theo
+    buttonPressed = 0;
+
+    return 0;
+}
+```
+
+Nếu không có từ khóa `volatile`, trình biên dịch có thể tối ưu hóa vòng lặp này bằng cách giữ giá trị của `buttonPressed` trong một thanh ghi và vòng lặp có thể không bao giờ thoát ra, ngay cả khi nút đã được nhấn
+
+</p>
+</details>
 
 ## 4. Register:
 
