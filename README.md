@@ -1,8 +1,23 @@
 # Bài 1: Compiler - Macro
+<details><summary>Chi tiết</summary>
+<p>
+
 ## Compiler
-####
-Trình biên dịch (compiler) trong C/C++ là công cụ chuyển đổi mã nguồn từ ngôn ngữ lập trình cấp cao (C hoặc C++) sang mã máy hoặc mã thực thi để máy tính có thể hiểu và thực hiện.
+
+<details><summary>Chi tiết</summary>
+<p>
+
+    
+#### Trình biên dịch (compiler) trong C/C++ là công cụ chuyển đổi mã nguồn từ ngôn ngữ lập trình cấp cao (C hoặc C++) sang mã máy hoặc mã thực thi để máy tính có thể hiểu và thực hiện.
+
+</p>
+</details>
+
 ### 1. Preprocessor
+
+<details><summary>Chi tiết</summary>
+<p>
+
 ##### Preprocessor trong C/C++ là một công cụ xử lý mã nguồn trước khi quá trình biên dịch bắt đầu. Chuyển file main.c thành file main.i
 ##### gcc -E main.c -o main.i
 #### Macro: là từ dùng để chỉ những thông tin được xử lý ở quá trình tiền xử lý (Preprocessor)
@@ -19,7 +34,15 @@ Trình biên dịch (compiler) trong C/C++ là công cụ chuyển đổi mã ng
 ##### Sử dụng macro sẽ copy nội dung được định nghĩa vào
 ##### Nếu có comment thì sẽ xóa bỏ comment
 #### Tóm lại tiền xử lý (Preprocessor) copy tất cả source lại để tạo thành file.i
+</p>
+</details>
+
+
 ##### 1.1 Marco Function
+
+<details><summary>Chi tiết</summary>
+<p>
+
 ###### CREATE 1 FUNC
 ![bai1](https://github.com/user-attachments/assets/0ff94a34-be05-4af4-b5b0-88d266976fbb)
 ![bai1i](https://github.com/user-attachments/assets/de962ab0-2cf7-49e2-b8c8-44a12d022100)
@@ -51,7 +74,14 @@ Trình biên dịch (compiler) trong C/C++ là công cụ chuyển đổi mã ng
 ![image](https://github.com/user-attachments/assets/a144ef79-2cc4-415f-8b36-8c9114615070)
 ![image](https://github.com/user-attachments/assets/01598cc9-3d8a-44a5-ae6a-e4f96828b85e)
 
+</p>
+</details>
+
 ### 2. Compiler
+
+<details><summary>Chi tiết</summary>
+<p>
+
 #### Sau khi Preprocessor sẽ tới compiler. Quá trình này được gọi là assembly code sẽ tạo file main.i thành file main.s
 #####  gcc main.i -S -o main.s
 ##### Ví dụ:
@@ -59,23 +89,80 @@ Trình biên dịch (compiler) trong C/C++ là công cụ chuyển đổi mã ng
 ##### Sau khi gcc bai1_3.i -S -o bai1_3.s
 ![image](https://github.com/user-attachments/assets/04053350-1d78-47f7-8afb-82b63027e28b)
 
+</p>
+</details>
+
 ### 3. Assembler
+
+<details><summary>Chi tiết</summary>
+<p>
+
 #### Assembly code qua quá trình Assembler sẽ tạo ra Object file ( mã để nạp vào trong máy )
 #### gcc main.s -o main.o
+
+</p>
+</details>
+
 ### 4. Linker
+
+<details><summary>Chi tiết</summary>
+<p>
+
 #### Linker là gộp những file object lại thành file cuối cùng sẽ tạo ra executable file
 #### gcc test1.o test2.o -o main
 ./main
+
+</p>
+</details>
+
+
+</p>
+</details>
+
 # Bài 2: STDARG - ASSERT 
-## 1.	Stdarg Thư viện stdarg.h trong C cung cấp các macro để xử lý các hàm có số lượng đối số không xác định. Nó cho phép bạn viết các hàm có thể nhận bất kỳ số lượng đối số nào, chẳng hạn như printf.
+
+<details><summary>Chi tiết</summary>
+<p>
+
+
+## 1.Thư viện Stdarg :
+
+<details><summary>Chi tiết</summary>
+<p>
+
+Thư viện Stdarg (stdarg.h) trong C cung cấp các macro để xử lý các hàm có số lượng đối số không xác định. Nó cho phép bạn viết các hàm có thể nhận bất kỳ số lượng đối số nào, chẳng hạn như printf.
 ### Va_list: được sử dụng để khai báo một biến mà có thể lưu trữ và truy cập các đối số không cố định của một hàm
 ### Va_start: dùng để khởi tạo một biến kiểu va_list trước khi truy cập các đối số không cố định của một hàm. Nó cần tham số là đối số cố định cuối cùng của hàm để xác định vị trí bắt đầu của các đối số không cố định. 
 ### Va_arg: Lấy đối số tiếp theo trong danh sách 
 ### Va_end: được sử dụng để kết thúc việc truy cập các đối số không cố định của một hàm. Nó cần được gọi trước khi kết thúc hàm
+
+</p>
+</details>
+
 ## 2. Thư viện assert:
+
+<details><summary>Chi tiết</summary>
+<p>
+
 ### Thư viện assert cung cấp macro assert để kiểm tra các điều kiện tại thời điểm chạy chương trình. Nếu điều kiện kiểm tra là sai, chương trình sẽ dừng thực thi và hiển thị thông báo lỗi với thông tin về tệp tin và dòng mã nơi xảy ra lỗi. assert chủ yếu được sử dụng trong quá trình gỡ lỗi để đảm bảo các điều kiện tiên quyết được đáp ứng.
+
+</p>
+</details>
+
+</p>
+</details>
+
 # Bài 3: Pointer
-##  Pointer là một biến lưu trữ địa chỉ của một biến khác. Pointer không lưu giá trị trực tiếp mà lưu trữ địa chỉ của vùng nhớ nơi giá trị đó được lưu trữ. Điều này cho phép thao tác trực tiếp với vùng nhớ, truy cập và thay đổi giá trị của biến thông qua địa chỉ mà pointer trỏ tới.
+
+<details><summary>Chi tiết</summary>
+<p>
+
+##  Pointer:
+
+<details><summary>Chi tiết</summary>
+<p>
+
+Pointer là một biến lưu trữ địa chỉ của một biến khác. Pointer không lưu giá trị trực tiếp mà lưu trữ địa chỉ của vùng nhớ nơi giá trị đó được lưu trữ. Điều này cho phép thao tác trực tiếp với vùng nhớ, truy cập và thay đổi giá trị của biến thông qua địa chỉ mà pointer trỏ tới.
 ## Cách khai báo:
 ```bash
 int *ptr;  // con trỏ đến kiểu int
@@ -101,7 +188,15 @@ Output:
 dia chi a: 00007FF68E0D3000
 gia tri ptr: 00007FF68E0D3000
 ```
+
+</p>
+</details>
+
 ## Các loại con trỏ:
+
+<details><summary>Chi tiết</summary>
+<p>
+
 ### 1. Function pointer: Function pointer (con trỏ hàm) là một biến lưu trữ địa chỉ của một hàm. Nó cho phép gọi hàm thông qua con trỏ, tức là có thể gọi hàm mà không cần biết tên cụ thể của hàm đó, chỉ cần biết địa chỉ của nó. Con trỏ hàm rất hữu ích khi cần linh hoạt trong việc gọi các hàm khác nhau tại runtime.
 #### Ví dụ:
 ```bash
@@ -381,6 +476,158 @@ int *const ptr;
 #### Cú pháp:
 ```bash
 int **pp;
+```
+
+</p>
+</details>
+
+</p>
+</details>
+
+# Bài 4: Extern - Static - Volatile
+## 1. Extern:
+Extern: Có thể lấy được những biến toàn cục và những hàm toàn cục của những file.c khác kết nối đến file muốn sử dụng
+
+Ở file bai4.c
+```bash
+#include <stdio.h>
+
+extern int cout;    // External integer variable
+extern void display();  // External function
+
+int main(int argc, char const *argv[])
+{
+    display();
+    cout = 50;
+    printf("Test: %d\n", cout);
+    display();
+    return 0;
+}
+```
+
+Ở file bai4_1.c
+```bash
+#include <stdio.h>
+
+int cout = 10;  // Definition of the variable cout with an initial value of 10
+
+void display() {
+    printf("test.c : %d\n", cout);
+}
+```
+
+Sử dụng câu lệnh:
+```bash
+gcc -c bai4.c -o bai4.o
+gcc -c bai4_1.c -o bai4_1.o
+gcc bai4.o bai4_1.o -o bai4
+./bai4
+```
+
+Kết quả:
+```bash
+test.c : 10
+Test: 50
+test.c : 50
+```
+## 2. Static:
+
+2.1: Static local variables:
+
+Static local variables (biến cục bộ tĩnh) là một biến được khai báo bên trong một hàm với từ khóa `static`. Biến chỉ được khởi tạo một lần duy nhất khi chương trình chạy, và giá trị của nó được giữ nguyên giữa các lần gọi hàm, thay vì bị hủy và khởi tạo lại mỗi khi hàm được gọi như biến cục bộ thông thường. Phạm vi của biến cục bộ tĩnh vẫn bị giới hạn trong hàm mà nó được khai báo, nhưng thời gian sống của nó kéo dài suốt quá trình thực thi của chương trình
+
+Ví dụ:
+```bash
+#include <stdio.h>
+
+void demLanGoiHam() {
+    static int dem = 0; // Biến cục bộ tĩnh
+    dem++;
+    printf("Hàm đã được gọi %d lần\n", dem);
+}
+
+int main() {
+    demLanGoiHam(); // Kết quả: Hàm đã được gọi 1 lần
+    demLanGoiHam(); // Kết quả: Hàm đã được gọi 2 lần
+    demLanGoiHam(); // Kết quả: Hàm đã được gọi 3 lần
+
+    return 0;
+}
+```
+
+Kết quả:
+```
+Hàm đã được gọi 1 lần
+Hàm đã được gọi 2 lần
+Hàm đã được gọi 3 lần
+```
+2.2: Static global variables:
+ Static global variables (biến toàn cục tĩnh) là biến được khai báo ở phạm vi toàn cục (ngoài các hàm) với từ khóa `static`. Khác với biến toàn cục thông thường, biến toàn cục tĩnh có phạm vi chỉ giới hạn trong tệp tin (file) mà nó được khai báo, nghĩa là nó không thể được truy cập từ các tệp tin khác trong chương trình (ngay cả khi sử dụng từ khóa `extern`)
+
+- Phạm vi: Biến toàn cục tĩnh chỉ có phạm vi trong tệp tin mà nó được khai báo, giúp tránh việc bị truy cập hoặc sửa đổi ngoài ý muốn từ các tệp tin khác trong chương trình
+
+- Thời gian tồn tại: Biến toàn cục tĩnh có thời gian sống kéo dài suốt thời gian chạy của chương trình, từ khi chương trình bắt đầu cho đến khi kết thúc, giống như các biến toàn cục thông thường
+
+- Khả năng truy cập: Do chỉ có phạm vi trong tệp tin, biến toàn cục tĩnh không thể bị truy cập trực tiếp từ các tệp tin khác, giúp tăng tính bảo mật và ổn định của chương trình
+
+ Ví dụ:
+ ```bash
+#include <stdio.h>
+
+static int soDem = 0; // Biến toàn cục tĩnh
+
+void tangDem() {
+    soDem++;
+    printf("So dem: %d\n", soDem);
+}
+
+int main() {
+    tangDem(); // Kết quả: So dem: 1
+    tangDem(); // Kết quả: So dem: 2
+    tangDem(); // Kết quả: So dem: 3
+
+    return 0;
+}
+```
+
+Kết quả:
+```bash
+So dem: 1
+So dem: 2
+So dem: 3
+```
+
+
+
+
+
+## 4. Register:
+
+`Register` được sử dụng để khai báo một biến với gợi ý cho trình biên dịch rằng biến này sẽ được truy cập rất nhiều và nên được lưu trữ trong thanh ghi (register) của CPU thay vì trong bộ nhớ chính. Việc này có thể làm tăng hiệu suất chương trình bởi vì truy cập vào các thanh ghi nhanh hơn nhiều so với truy cập vào bộ nhớ
+
+- Tốc độ truy cập nhanh: Biến `register` có khả năng được lưu trữ trong các thanh ghi của CPU, giúp tăng tốc độ truy cập và thao tác với biến
+
+- Không có địa chỉ: Biến được khai báo với từ khóa `register` không có địa chỉ bộ nhớ như các biến thông thường, vì vậy bạn không thể lấy địa chỉ của nó bằng toán tử `&`
+
+- Phạm vi: Biến `register` chỉ có thể là biến cục bộ hoặc tham số của hàm, không thể là biến toàn cục
+
+  Ví dụ:
+  ```bash
+  #include <stdio.h>
+  void demTu0Den9() {
+    for (register int i = 0; i < 10; i++) {
+        printf("%d ", i);
+    }
+    printf("\n");
+  }
+  int main() {
+    demTu0Den9(); // In ra các số từ 0 đến 9
+    return 0;
+  }
+
+Kết quả:
+```
+  0 1 2 3 4 5 6 7 8 9
 ```
 
 
