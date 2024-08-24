@@ -699,6 +699,181 @@ Kết quả:
 </details>
 
 
+# Bài 5: Goto - setjmp.h
+## 1: Goto:
+
+`goto` là một từ khóa được sử dụng để nhảy đến một phần khác trong chương trình, được xác định bởi một nhãn. Câu lệnh `goto` có thể được dùng để điều hướng chương trình đến vị trí cụ thể, không phụ thuộc vào cấu trúc điều khiển thông thường như vòng lặp hoặc điều kiện
+
+Cú pháp:
+```bash
+label: // Nhãn
+    // Mã lệnh
+    goto label; // Nhảy đến nhãn
+```
+
+Ví dụ:
+```bash
+#include <stdio.h>
+
+int main(int argc, char const *argv[]) {
+    int i = 0;
+
+    // đặt label start
+start:
+    if (i >= 5) {
+        goto end;  // chuyển control đến label "end"
+    }
+    printf("%d\n", i);
+    i++;
+    goto start;
+
+    // đặt label end
+end:
+    printf("The end\n"); // chuyển control đến label "start"
+
+    return 0;
+}
+```
+Kết quả:
+```
+0
+1
+2
+3
+4
+The end
+```
+Ở đoạn code trên sử dụng lệnh `goto` để lặp qua các giá trị từ 0 đến 4, in từng giá trị ra màn hình. Khi giá trị đạt 5, chương trình nhảy đến phần kết thúc và in "The end" trước khi kết thúc chương trình
+
+Chúng ta có thể sử dụng `goto` để thay thế cho `break` hoặc các phương pháp khác khi cần thoát ra khỏi một số lượng lớn các vòng lặp lồng nhau
+
+Ví dụ:
+```bash
+#include <stdio.h>
+
+int main() {
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            if (j == 2) {
+                goto end_loop;  // Thay thế `break` bằng `goto`
+            }
+            printf("i = %d, j = %d\n", i, j);
+        }
+    end_loop:;  // Đặt label để tiếp tục vòng lặp chính
+    }
+
+    return 0;
+}
+```
+## 2. setjump.h
+
+`<setjmp.h>` cung cấp cơ chế để thực hiện "non-local jumps," cho phép chương trình nhảy ra khỏi một hàm từ sâu bên trong một chuỗi gọi hàm mà không cần quay trở lại từng hàm một
+
+Thư viện `<setjmp.h>` định nghĩa hai hàm chính: `setjmp` và `longjmp` có cú pháp như sau:
+
+- Trước tiên, cần khai báo một biến kiểu `jmp_buf`:
+```bash
+jmp_buf buffer;  // Tên biến là `buffer`, kiểu dữ liệu là `jmp_buf` (kiểu này được định nghĩa sẵn bởi thư viện).
+```
+
+- Sử dụng `setjmp` để lưu trữ trạng thái của môi trường tại điểm mà nó được gọi, `setjmp` sẽ trả về 0 nếu nó được gọi lần đầu tiên:
+
+```bash
+int val = setjmp(buffer);  // val = 0
+```
+
+- Sử dụng `longjmp`, chương trình sẽ quay trở lại điểm mà `setjmp` đã được gọi, và setjmp sẽ trả về giá trị là một số nguyên (không bao giờ là 0, vì giá trị 0 đặc biệt để nhận diện việc gọi `setjmp` lần đầu tiên)
+
+```bash
+longjmp(buffer, 1);  // Nhảy trở lại điểm trước đó với giá trị trả về val = 1
+```
+
+Ví dụ:
+```bash
+#include <stdio.h>
+#include <setjmp.h>
+
+jmp_buf buffer; // Khai báo một biến kiểu jmp_buf để lưu trữ trạng thái chương trình
+
+void functionA() {
+    printf("Đang trong functionA\n");
+    longjmp(buffer, 1); // Nhảy trở lại điểm setjmp với giá trị trả về là 1
+    printf("Điều này sẽ không bao giờ được in ra\n"); // Dòng này sẽ không được thực hiện
+}
+
+int main() {
+    int val = setjmp(buffer); // Lưu trữ trạng thái của chương trình tại đây
+
+    if (val == 0) {
+        printf("Lần đầu gọi setjmp, val = %d\n", val);
+        functionA(); // Gọi hàm functionA, hàm này sẽ sử dụng longjmp
+    } else {
+        printf("Quay lại từ longjmp, val = %d\n", val);
+    }
+
+    return 0;
+}
+```
+
+Kết quả:
+```
+Lần đầu gọi setjmp, val = 0
+Đang trong functionA
+Quay lại từ longjmp, val = 1
+```
+
+Như vậy, ví dụ cho thấy cách `setjmp` và `longjmp` có thể được sử dụng để kiểm soát luồng chương trình một cách đặc biệt, thường phục vụ cho mục đích xử lý ngoại lệ hoặc khôi phục trạng thái trong các ứng dụng phức tạp
+
+Hai hàm `setjmp/longjmp` thường được sử dụng để thực hiện xử lý ngoại lệ
+
+Ví dụ xử lý ngoại lệ khi chia cho 0:
+
+```bash
+#include <stdio.h>
+#include <setjmp.h>
+
+jmp_buf buffer; // Biến jmp_buf để lưu trữ trạng thái chương trình
+
+void divide(int a, int b) {
+    if (b == 0) {
+        printf("Lỗi: Chia cho 0!\n");
+        longjmp(buffer, 1); // Nhảy trở lại điểm setjmp với giá trị trả về là 1
+    } else {
+        printf("Kết quả của %d / %d = %d\n", a, b, a / b);
+    }
+}
+
+int main() {
+    int val = setjmp(buffer); // Lưu trạng thái của chương trình tại đây
+
+    if (val == 0) { // Thực hiện khi không có lỗi xảy ra
+        divide(10, 2); // Chia bình thường
+        divide(10, 0); // Chia cho 0 sẽ kích hoạt longjmp
+        printf("Điều này sẽ không bao giờ được in ra sau lỗi chia cho 0\n");
+    } else { // Thực hiện khi longjmp được gọi (khi có lỗi chia cho 0)
+        printf("Đã xử lý ngoại lệ chia cho 0, tiếp tục chương trình.\n");
+    }
+
+    printf("Kết thúc chương trình.\n");
+
+    return 0;
+}
+```
+
+Kết quả:
+```
+Kết quả của 10 / 2 = 5
+Lỗi: Chia cho 0!
+Đã xử lý ngoại lệ chia cho 0, tiếp tục chương trình.
+Kết thúc chương trình.
+```
+
+Trong ví dụ này, `setjmp` và `longjmp` được sử dụng để xử lý tình huống chia cho 0 như một ngoại lệ.
+Khi phát hiện chia cho 0, chương trình không bị dừng đột ngột mà thay vào đó sẽ nhảy đến phần xử lý ngoại lệ, tiếp tục thực thi phần còn lại của chương trình một cách an toàn
+
+
+
+
 
 
 
