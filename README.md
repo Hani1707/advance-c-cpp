@@ -700,7 +700,14 @@ Kết quả:
 
 
 # Bài 5: Goto - setjmp.h
+
+<details><summary>Chi tiết</summary>
+<p>
+
 ## 1: Goto:
+
+<details><summary>Chi tiết</summary>
+<p>
 
 `goto` là một từ khóa được sử dụng để nhảy đến một phần khác trong chương trình, được xác định bởi một nhãn. Câu lệnh `goto` có thể được dùng để điều hướng chương trình đến vị trí cụ thể, không phụ thuộc vào cấu trúc điều khiển thông thường như vòng lặp hoặc điều kiện
 
@@ -765,7 +772,14 @@ int main() {
     return 0;
 }
 ```
+
+</p>
+</details>
+
 ## 2. setjump.h
+
+<details><summary>Chi tiết</summary>
+<p>
 
 `<setjmp.h>` cung cấp cơ chế để thực hiện "non-local jumps," cho phép chương trình nhảy ra khỏi một hàm từ sâu bên trong một chuỗi gọi hàm mà không cần quay trở lại từng hàm một
 
@@ -872,7 +886,11 @@ Trong ví dụ này, `setjmp` và `longjmp` được sử dụng để xử lý 
 Khi phát hiện chia cho 0, chương trình không bị dừng đột ngột mà thay vào đó sẽ nhảy đến phần xử lý ngoại lệ, tiếp tục thực thi phần còn lại của chương trình một cách an toàn
 
 
+</p>
+</details>
 
+</p>
+</details>
 
 
 
