@@ -893,8 +893,120 @@ Khi phát hiện chia cho 0, chương trình không bị dừng đột ngột m�
 </details>
 
 
+# Bài 6: Bitmask
 
+`Bitmask` là một kỹ thuật sử dụng các phép toán bitwise để thao tác trên các bit của một số nguyên. Cho phép thiết lập, xóa, kiểm tra, hoặc đảo ngược các bit cụ thể trong một biến. `Bitmask` thường được sử dụng để quản lý các cờ (flags) hoặc trạng thái, giúp tối ưu hóa việc sử dụng bộ nhớ và thực hiện các phép toán logic hiệu quả trên các bit
 
+## NOT bitwise
+
+`NOT bitwise` được biểu diễn bằng ký hiệu `~`.Được sử dụng để đảo ngược tất cả các bit trong một số nguyên (hoặc bất kỳ kiểu dữ liệu nào hỗ trợ các phép toán bitwise)
+
+Ví dụ:
+```bash
+uint8_t value = 0b00001101;
+uint8_t not_value = ~value;  // Sử dụng toán tử NOT bitwise
+```
+
+Kết quả:
+```
+00001101
+```
+
+## OR bitwise
+
+`OR bitwise` được biểu diễn bằng ký hiệu |. `OR bitwise` thực hiện phép OR trên từng cặp bit tương ứng của hai số nguyên.
+- Nếu ít nhất một trong các bit là 1, bit kết quả sẽ là 1
+- Nếu cả hai bit đều là 0, bit kết quả sẽ là 0.
+
+Cách hoạt động:
+- 0 | 0 = 0
+- 0 | 1 = 1
+- 1 | 0 = 1
+- 1 | 1 = 1
+
+Ví dụ:
+```bash
+uint8_t a = 0b11001010;  // Số thứ nhất
+uint8_t b = 0b10110110;  // Số thứ hai
+uint8_t result = a | b;  // Áp dụng OR bitwise
+```
+
+Kết quả:
+```
+11001010
+10110110
+--------
+11111110
+```
+
+## XOR bitwise:
+`XOR bitwise` được biểu diễn bằng ký hiệu `^`.Thực hiện phép XOR trên từng cặp bit tương ứng của hai số nguyên
+
+`XOR` trả về 1 khi hai bit khác nhau và trả về 0 khi hai bit giống nhau
+
+Cách hoạt động:
+- 0 ^ 0 = 0
+- 0 ^ 1 = 1
+- 1 ^ 0 = 1
+- 1 ^ 1 = 0
+
+Ví dụ:
+```bash
+uint8_t a = 0b11001010;  // Số thứ nhất
+uint8_t b = 0b10110110;  // Số thứ hai
+uint8_t result = a ^ b;  // Áp dụng XOR bitwise
+```
+
+Kết quả:
+```
+  11001010
+^ 10110110
+----------
+  01111100
+```
+
+## Shift left bitwise:
+`Shift left bitwise` trong C được biểu diễn bằng ký hiệu `<<`. `Shift left bitwise`  dịch chuyển các bit của một số về phía trái một số vị trí xác định, điền vào các vị trí bên phải bằng các bit 0. Mỗi lần dịch chuyển về trái một vị trí, giá trị của số sẽ được nhân đôi
+
+Cú pháp:
+```bash
+result = value << n;
+```
+
+Ví dụ:
+```bash
+uint8_t value = 0b00001101;   // Giá trị ban đầu: 13 (00001101)
+uint8_t shifted_value = value << 2;  // Dịch trái 2 bit
+```
+
+Kết quả:
+```
+00001101 << 2
+----------
+00110100
+```
+
+## Shift right bitwise:
+
+`Shift right bitwise` được biểu diễn bằng ký hiệu `>>`. Shift right bitwise dịch chuyển các bit của một số về phía phải một số vị trí xác định, điền vào các vị trí bên trái bằng các bit 0 (nếu là số không dấu) hoặc sao chép bit dấu (nếu là số có dấu)
+
+Cú pháp:
+```bash
+result = value >> n;
+```
+
+Ví dụ:
+```bash
+uint8_t value = 0b00101100;   // Giá trị ban đầu: 44 (00101100)
+uint8_t shifted_value = value >> 2;  // Dịch phải 2 bit
+```
+
+Kết quả:
+```
+00101100 >> 2
+----------
+00001011
+```
 
 
 
