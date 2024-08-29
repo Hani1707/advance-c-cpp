@@ -1054,3 +1054,254 @@ Kết quả:
 </details>
 
 
+# Bài 7: Struct - Union
+
+<details><summary>Chi tiết</summary>
+<p>
+
+## 1: Struct
+
+<details><summary>Chi tiết</summary>
+<p>
+
+`struct` là một kiểu dữ liệu do người dùng định nghĩa, cho phép nhóm nhiều biến thuộc các kiểu dữ liệu khác nhau lại với nhau dưới một tên chung
+
+Cách khai báo:
+```bash
+struct TenCauTruc {
+    kieu_du_lieu1 ten_bien1;
+    kieu_du_lieu2 ten_bien2;
+};
+```
+
+Ví dụ:
+```bash
+#include <stdio.h>
+#include <stdint.h>
+
+typedef struct {
+    uint8_t  arr1[8];  
+    uint64_t arr4[7]; 
+    uint16_t arr2[6]; 
+    uint32_t arr3[5];  
+} frame;
+
+int main(int argc, char const *argv[])
+{
+    printf("kich thuoc: %lu byte\n", sizeof(frame));
+    return 0;
+}
+```
+
+Kết quả:
+```
+kich thuoc: 96 byte
+```
+
+Ở ví dụ trên ta có:
+
+Cấu trúc `frame`:
+
+- `arr1[8]`: Mảng `uint8_t` có 8 phần tử. Mỗi phần tử `uint8_t` chiếm 1 byte, nên tổng cộng `arr1` chiếm 8 byte.
+
+  
+- `arr4[7]`: Mảng `uint64_t` có 7 phần tử. Mỗi phần tử `uint64_t` chiếm 8 byte, nên tổng cộng `arr4` chiếm 56 byte.
+  
+- `arr2[6]`: Mảng `uint16_t` có 6 phần tử. Mỗi phần tử `uint16_t` chiếm 2 byte, nên tổng cộng `arr2` chiếm 12 byte.
+  
+- `arr3[5]`: Mảng `uint32_t` có 5 phần tử. Mỗi phần tử `uint32_t` chiếm 4 byte, nên tổng cộng arr3 chiếm 20 byte
+
+Kích thước `struct frame`:
+
+Tổng kích thước sẽ là 8 byte `arr1` + 56 byte `arr4` + 12 byte `arr2` + 20 byte `arr3` = 96 byte.
+
+</p>
+</details>
+
+## 2. Union
+
+<details><summary>Chi tiết</summary>
+<p>
+
+`union` là một kiểu dữ liệu do người dùng định nghĩa tương tự như `struct`, nhưng với một điểm khác biệt : tất cả các thành viên của `union` chia sẻ cùng một vị trí bộ nhớ. Chỉ có một trong các thành viên có thể lưu trữ giá trị tại một thời điểm, và kích thước của union sẽ bằng kích thước của thành viên lớn nhất
+
+Cách khai báo:
+```bash
+union TenUnion {
+    kieu_du_lieu1 ten_bien1;
+    kieu_du_lieu2 ten_bien2;
+};
+```
+
+Ví dụ:
+```bash
+#include <stdio.h>
+#include <stdint.h>
+
+typedef union {
+    uint8_t  arr1;      // 1 byte
+    uint32_t arr2;      // 4 byte
+    uint16_t arr3;      // 2 byte
+} frame;
+
+int main(int argc, char const *argv[])
+{
+    printf("Size = %lu\n", sizeof(frame));  // In kích thước của union
+
+    frame data;
+
+    printf("Dia chi: %p\n", (void*)&data);                // Địa chỉ của toàn bộ union
+    printf("Dia chi data.arr1: %p\n", (void*)&data.arr1); // Địa chỉ của arr1
+    printf("Dia chi data.arr2: %p\n", (void*)&data.arr2); // Địa chỉ của arr2
+    printf("Dia chi data.arr3: %p\n", (void*)&data.arr3); // Địa chỉ của arr3
+
+    // Gán giá trị cho các thành viên của union
+    data.arr1 = 1;
+    printf("arr1 = %d\n", data.arr1);  // In giá trị của arr1
+
+    data.arr2 = 2;
+    printf("arr2 = %d\n", data.arr2);  // In giá trị của arr2
+
+    data.arr3 = 3;
+    printf("arr3 = %d\n", data.arr3);  // In giá trị của arr3
+
+    return 0;
+}
+```
+
+Kết quả:
+```
+Size = 4
+Dia chi: 00000083821FF89C
+Dia chi data.arr1: 00000083821FF89C
+Dia chi data.arr2: 00000083821FF89C
+Dia chi data.arr3: 00000083821FF89C
+arr1 = 1
+arr2 = 2
+arr3 = 3
+```
+
+Ở ví dụ trên ta có:
+
+Kích thước union:
+
+Khai báo một union có tên là `frame`. union này chứa ba thành viên:
+
+- `arr1`: Biến kiểu uint8_t (1 byte).
+
+- `arr2`: Biến kiểu uint32_t (4 byte).
+  
+- `arr3`: Biến kiểu uint16_t (2 byte).
+
+  
+Kích thước của union được xác định bởi thành viên có kích thước lớn nhất. Như vậy `arr2` có kích thước lớn nhất (4 byte), nên kích thước của `frame` sẽ là 4 byte.
+
+Gán giá trị:
+
+Lần lượt gán các giá trị cho từng thành viên của union:
+
+- `data.arr1 = 1`: Gán giá trị 1 cho `arr1`
+
+- `data.arr2 = 2`: Gán giá trị 2 cho `arr2`, ghi đè giá trị trong arr1.
+
+- `data.arr3 = 3`: Gán giá trị 3 cho `arr3`, ghi đè giá trị trong arr2.
+
+Sau mỗi lần gán, chương trình in ra giá trị của thành viên đó. Do chia sẻ cùng một vùng nhớ, mỗi lần gán mới sẽ ghi đè lên giá trị trước đó.
+
+</p>
+</details>
+
+## Ứng dụng kết hợp struct và union:
+
+<details><summary>Chi tiết</summary>
+<p>
+
+
+Kết hợp struct và union rất hữu ích trong các hệ thống nhúng, giao thức truyền thông, hoặc bất kỳ ứng dụng nào cần tiết kiệm bộ nhớ mà vẫn duy trì tính linh hoạt trong việc xử lý nhiều loại dữ liệu. Cho phép  tạo ra các cấu trúc dữ liệu phức tạp mà không tiêu tốn nhiều bộ nhớ hơn mức cần thiết
+
+Ví dụ:
+```bash
+#include <stdio.h>
+#include <stdint.h>
+#include <string.h>
+
+#define MAX_STRING_SIZE 20
+
+// Định nghĩa gói dữ liệu bằng struct và union
+typedef struct {
+    uint8_t type;  // Loại dữ liệu: 1 = integer, 2 = float, 3 = string
+    union {
+        int i;
+        float f;
+        char str[MAX_STRING_SIZE];
+    } data;
+} DataPacket;
+
+void printDataPacket(const DataPacket* packet) {
+    printf("Data type: %u\n", packet->type);
+    switch (packet->type) {
+        case 1:
+            printf("Integer: %d\n", packet->data.i);
+            break;
+        case 2:
+            printf("Float: %f\n", packet->data.f);
+            break;
+        case 3:
+            printf("String: %s\n", packet->data.str);
+            break;
+        default:
+            printf("Unknown type\n");
+    }
+}
+
+int main() {
+    DataPacket packet;
+
+    // Gói dữ liệu chứa số nguyên
+    packet.type = 1;
+    packet.data.i = 42;
+    printDataPacket(&packet);
+
+    // Gói dữ liệu chứa số thực
+    packet.type = 2;
+    packet.data.f = 3.14f;
+    printDataPacket(&packet);
+
+    // Gói dữ liệu chứa chuỗi ký tự
+    packet.type = 3;
+    strncpy(packet.data.str, "Hello, World!", MAX_STRING_SIZE);
+    printDataPacket(&packet);
+
+    return 0;
+}
+```
+
+Kết quả:
+```
+Data type: 1
+Integer: 42
+Data type: 2
+Float: 3.140000
+Data type: 3
+String: Hello, World!
+```
+
+Ở ví dụ trên ta có:
+
+- `union` giúp tiết kiệm bộ nhớ vì nó chỉ chiếm một lượng bộ nhớ đủ lớn để chứa thành viên lớn nhất. Nếu `MAX_STRING_SIZE` là giá trị lớn nhất, kích thước của `union` sẽ bằng kích thước của `char[MAX_STRING_SIZE]`
+
+- `struct DataPacket` cho phép bạn tạo ra một gói dữ liệu (data packet) mà có thể chứa một số nguyên, một số thực, hoặc một chuỗi ký tự, nhưng chỉ một trong ba loại dữ liệu này tại một thời điểm.
+
+- Sử dụng `type` để xác định loại dữ liệu hiện tại trong gói, bạn có thể biết được cách đọc hoặc xử lý giá trị trong `union`
+
+</p>
+</details>
+
+</p>
+</details>
+
+
+
+
+
+
