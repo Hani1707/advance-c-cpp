@@ -1300,6 +1300,179 @@ String: Hello, World!
 </p>
 </details>
 
+# Bài 8: Memory layout
+
+Chương trình main.exe (trên window), main.hex (nạp vào vi điều khiển) được lưu ở bộ nhớ SSD (ROM) hoặc FLASH. Khi nhấn run chương trình trên window (cấp nguồn cho vi điều khiển) thì những chương trình này sẽ được copy vào bộ nhớ RAM để thực thi
+
+## 1. Text segment
+
+Bao gồm:
+
+- Mã máy tập hợp các lệnh thực thi
+- Hằng số (const), con trỏ kiểu char
+
+Quyền truy cập thường chỉ có quyền đọc và thực thi, nhưng không có quyền ghi
+
+Tất cả các biến lưu ở phần vùng Text đều không thể thay đổi giá trị mà chỉ được đọc
+
+```c
+
+#include <stdio.h>
+
+const int a = 10;			//Hằng số
+char *arr1 = "Hello";			//Con trỏ kiểu char
+
+int main() {
+    //a=10;             		//Không được phép thay đổi->Bị lỗi
+    //arr1[3] = 'E';
+
+    printf("a: %d\n", a);
+    printf("arr1: %s", arr1);
+
+    return 0;
+}
+```
+## 2. Data segment
+
+Hay còn gọi là phân vùng Initialized Data Segment (Dữ liệu Đã Khởi Tạo), bao gồm:
+
+- Biến toàn cục được khởi tạo với giá trị khác 0
+- Biến static được khởi tạo với giá trị khác 0
+
+Quyền truy cập là đọc và ghi, tức là có thể đọc và thay đổi giá trị của biến
+
+Tất cả các biến sẽ được thu hồi sau khi chương trình kết thúc
+
+```c
+
+#include <stdio.h>
+
+int a = 10;			//Biến toàn cục khởi tạo khác 0
+double d = 20.5;		//Biến toàn cục khởi tạo khác 0
+
+static int var = 5;		//Biến static toàn cục khởi tạo khác 0
+
+void test(){
+    static int local = 10;	//Biến static cục bộ khởi tạo khác 0
+}
+
+int main(int argc, char const *argv[]){  
+    a = 15;			//Có thể đọc và thay đổi giá trị của biến
+    d = 25.7;
+    var = 12;
+    printf("a: %d\n", a);
+    printf("d: %f\n", d);
+    printf("var: %d\n", var);
+    
+    return 0;
+}
+```
+## 3. Bss segment
+Hay còn gọi là phân vùng Uninitialized Data Segment (Dữ liệu Chưa Khởi Tạo) gồm:
+- Biến toàn cục khởi tạo với giá trị bằng 0 hoặc không gán giá trị
+- Biến static với giá trị khởi tạo bằng 0 hoặc không gán giá trị
+
+Quyền truy cập là đọc và ghi, tức là có thể đọc và thay đổi giá trị của biến
+
+Tất cả các biến sẽ được thu hồi sau khi chương trình kết thúc
+
+```c
+
+#include <stdio.h>
+
+typedef struct 			//Lưu ý: Đây là kiểu dữ liệu,
+{				//nó không nằm bất kì trong phân vùng nào!	
+    int x;
+    int y;
+} Point_Data;
+
+int a = 0;			//Biến toàn cục khởi tạo bằng 0
+int b;				//Biến toàn cục ko khởi tạo
+
+static int global = 0;		//Biến static toàn cục khởi tạo bằng 0
+static int global_2;		//Biến static toàn cục ko khởi tạo
+
+static Point_Data p1 = {5,7};	//Lưu ý: biến p1 này đã khởi tạo có giá trị nên nằm ở DS
+
+void test(){
+    static int local = 0;	//Biến static cục bộ khởi tạo bằng 0
+    static int local_2;		//Biến static cục bộ ko khởi tạo
+}
+
+int main() {
+    global = 0;			//Lưu ý: dù thay đổi giá trị nó vẫn nằm ở BSS
+
+    printf("a: %d\n", a);
+    printf("global: %d\n", global);
+
+    return 0;
+}
+```
+## 4. Stack 
+
+Phân vùng Stack chứa:
+- Các biến cục bộ, tham số truyền vào
+
+Quyền truy cập là đọc và ghi, nghĩa là có thể đọc và thay đổi giá trị của biến trong suốt thời gian chương trình chạy
+
+Sau khi ra khỏi hàm, sẽ thu hồi vùng nhớ
+
+Hoạt động theo kiểu LIFO(Last In Fist Out)
+
+```c
+#include <stdio.h>
+
+void test(){
+    int test = 0;
+    test = 5;
+    printf("test: %d\n",test);
+}
+
+int sum(int a, int b){
+    int c = a + b;
+    printf("sum: %d\n",c);
+    return c;
+}
+
+int main() {
+    sum(3,5);
+    /*
+        0x01
+        0x02
+        0x03
+    */
+   test();
+   /*
+    int test = 0; // 0x01
+   */
+  
+    return 0;
+}
+```
+## 5. Heap
+
+Heap được sử dụng để cấp phát bộ nhớ động trong quá trình thực thi của chương trình
+
+Heap có quyền đọc và ghi, nghĩa là có thể đọc và thay đổi giá trị của biến trong suốt thời gian chương trình chạy
+
+Nếu liên tục cấp phát vùng nhớ mà không giải phóng thì sẽ bị lỗi tràn vùng nhớ Heap (Heap overflow)
+
+Nếu khởi tạo một vùng nhớ quá lớn mà vùng nhớ Heap không thể lưu trữ một lần được sẽ bị lỗi khởi tạo vùng nhớ Heap thất bại
+
+Ví dụ:
+```c
+int *A = (int *)malloc(18446744073709551615);
+```
+
+Các hàm như `malloc()`, `calloc()`, `realloc()`, và `free()` được sử dụng để cấp phát và giải phóng bộ nhớ trên heap
+
+
+
+
+
+
+
+
 
 
 
