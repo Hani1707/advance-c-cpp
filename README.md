@@ -1302,6 +1302,9 @@ String: Hello, World!
 
 # Bài 8: Memory layout
 
+<details><summary>Chi tiết</summary>
+<p>
+
 Chương trình main.exe (trên window), main.hex (nạp vào vi điều khiển) được lưu ở bộ nhớ SSD (ROM) hoặc FLASH. Khi nhấn run chương trình trên window (cấp nguồn cho vi điều khiển) thì những chương trình này sẽ được copy vào bộ nhớ RAM để thực thi
 
 ## 1. Text segment
@@ -1466,9 +1469,112 @@ int *A = (int *)malloc(18446744073709551615);
 
 Các hàm như `malloc()`, `calloc()`, `realloc()`, và `free()` được sử dụng để cấp phát và giải phóng bộ nhớ trên heap
 
+### Hàm `malloc()`
+Cấp phát một vùng nhớ có kích thước được xác định bằng số byte và trả về một con trỏ đến vùng nhớ này. 
+
+Vùng nhớ được cấp phát nhưng không được khởi tạo (nội dung là ngẫu nhiên).
+
+Tại sao gọi là ngẫu nhiên vì nó có thể chứa các giá trị rác từ trước đó, lập trình viên cần tự khởi tạo giá trị cho vùng nhớ sau khi cấp phát.
+
+**Đây là điểm khác biệt so với calloc!**
+
+**Ví dụ:**
+```c
+#include <stdio.h>
+#include <stdlib.h> // malloc, calloc, realloc, free
+#include <stdint.h>
+
+int main(int argc, char const *argv[]) {
+    uint16_t *ptr = NULL;
+    ptr = (uint16_t*)malloc(sizeof(uint16_t)*4); 	//0x01 0x02 0x03 0x04 0x05 0x06 0x07 0x08
+    
+    for (int i=0; i<4; i++) {
+        ptr[i] = 2*i;
+    }
+
+    for (int i=0; i<8; i++) {
+        printf("Địa chỉ: %p, giá trị: %d\n", (uint8_t*)ptr+i, *((uint8_t*)ptr+i));
+    }
+
+    free(ptr);
+
+    return 0;
+}
+```
+ - Sử dụng hàm `malloc` để cấp phát một vùng nhớ đủ để chứa 4 phần tử uint16_t (tổng cộng là 8 byte). Con trỏ ptr sẽ trỏ đến vùng nhớ được cấp phát.
+ - Vòng lặp `for`: Gán giá trị cho các phần tử tiếp theo của mảng.
+ - Vòng lặp `for` thứ hai duyệt qua từng byte của vùng nhớ đã cấp phát (tổng cộng là 8 byte vì mỗi uint16_t chiếm 2 byte và có 4 phần tử).
+
+**Output từ Terminal:**
+```c
+> Địa chỉ: 000002353F1A8990, giá trị: 0
+> Địa chỉ: 000002353F1A8991, giá trị: 0
+> Địa chỉ: 000002353F1A8992, giá trị: 2
+> Địa chỉ: 000002353F1A8993, giá trị: 0
+> Địa chỉ: 000002353F1A8994, giá trị: 4
+> Địa chỉ: 000002353F1A8995, giá trị: 0
+> Địa chỉ: 000002353F1A8996, giá trị: 6
+> Địa chỉ: 000002353F1A8997, giá trị: 0
+```
+Giải thích tại sao lại có kết quả như vậy, lấy phần tử `ptr[1]` đại diện:
+ - `ptr[1] = 2` (dạng nhị phân: 0b 00000000 00000010).
+ - Byte 3: 0b00000010 (2).
+ - Byte 4: 0b00000000 (0).
+
+### Hàm `calloc()`
+Cấp phát bộ nhớ cho một mảng gồm nhiều phần tử, **khởi tạo tất cả các phần tử của mảng với giá trị 0**, và trả về một con trỏ đến vùng nhớ này.
+
+**Ví dụ:**
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+
+int main() {
+    // Cấp phát bộ nhớ cho 6 phần tử kiểu uint16_t bằng hàm calloc
+    uint16_t *ptr = NULL;
+    ptr = (uint16_t*)calloc(6, sizeof(uint16_t));
+
+    // In địa chỉ và giá trị của từng phần tử trong mảng
+    for (int i = 0; i < 6; i++) {
+        printf("Địa chỉ: %p, giá trị: %d\n", (void*)(ptr + i), ptr[i]);
+    }
+
+    // Giải phóng bộ nhớ đã cấp phát
+    free(ptr);
+
+    return 0;
+}
+```
+**Output từ Terminal:**
+```c
+> Địa chỉ: 00000241654EE9D0, giá trị: 0
+> Địa chỉ: 00000241654EE9D2, giá trị: 0
+> Địa chỉ: 00000241654EE9D4, giá trị: 0
+> Địa chỉ: 00000241654EE9D6, giá trị: 0
+> Địa chỉ: 00000241654EE9D8, giá trị: 0
+> Địa chỉ: 00000241654EE9DA, giá trị: 0
+```
+### Hàm `realloc()`
+Thay đổi kích thước của vùng nhớ đã được cấp phát trước đó bằng malloc hoặc calloc, và trả về một con trỏ đến vùng nhớ mới (nội dung của vùng nhớ có thể thay đổi).
+
+```c
+uint16_t *ptr = NULL;
+ptr = (uint16_t*)malloc(sizeof(uint16_t)*4); 		//0x01 0x02 0x03 0x04 0x05 0x06 0x07 0x08
+
+//Cấp phát thêm 4 byte nữa
+ptr = (uint16_t*)realloc(ptr, sizeof(uint16_t)*6); 	//0x01 0x02 0x03 0x04 0x05 0x06 0x07 0x08 0x09 0x0A 0x0B 0x0C
+```
+
+### Hàm `free()`
+Giải phóng bộ nhớ đã được cấp phát trước đó bằng `malloc`, `calloc`, hoặc `realloc`.
+```c
+free(ptr);
+```
 
 
-
+</p>
+</details>
 
 
 
