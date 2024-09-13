@@ -1577,6 +1577,30 @@ free(ptr);
 </details>
 
 
+# Bài 9: 
+## 1. Khái niệm
+<details><summary>Chi tiết</summary>
+<p>
+	
+Linked List là một cấu trúc dữ liệu bao gồm một chuỗi các node (nút), mỗi nút chứa hai thành phần chính:
+- Dữ liệu (data): Đây là giá trị được lưu trữ trong nút.
+- Con trỏ (pointer): Đây là tham chiếu (địa chỉ) đến nút tiếp theo trong danh sách.
+ <p align="center">
+  <img src="https://github.com/user-attachments/assets/8b38af8e-24fa-41f4-a6e6-01f6c683b6db" width="600">	
+</p>
+
+Trong C, ta thường dùng cấu trúc (struct) để định nghĩa một node. Cấu trúc này bao gồm:
+- Một thành viên lưu dữ liệu.
+- Một thành viên là con trỏ trỏ đến node tiếp theo cùng kiểu dữ liệu.
+```c
+typedef struct Node {
+    int data;           // Giá trị (dữ liệu) của node
+    struct Node* next;  // Con trỏ trỏ đến node tiếp theo
+} Node_t;
+```
+</p>
+</details>
+
 
 
 
