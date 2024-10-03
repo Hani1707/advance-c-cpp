@@ -1577,7 +1577,7 @@ free(ptr);
 </details>
 
 
-# Bài 9: 
+# Bài 9: LINKED LIST
 
 <details><summary>Chi tiết</summary>
 <p>
