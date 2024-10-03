@@ -1600,6 +1600,30 @@ typedef struct Node {
 ```
 </p>
 </details>
+## 2. Thao tác trên danh sách liên kết
+
+Khởi tạo một node mới
+
+```c
+// Hàm tạo một node mới
+struct Node* createNode(int value) {
+    // Cấp phát bộ nhớ cho node mới
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+
+    // Gán giá trị dữ liệu
+    newNode->data = value;
+
+    // Ban đầu node mới sẽ không trỏ đến node nào
+    newNode->next = NULL;
+
+    return newNode;
+}
+```
+Thêm một node vào vị trí cuối cùng
+```c
+
+
+
 
 
 
