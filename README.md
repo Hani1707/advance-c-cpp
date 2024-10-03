@@ -1,7 +1,7 @@
 # Bài 1: Compiler - Macro
 <details><summary>Chi tiết</summary>
 <p>
-saâs
+
 ## Compiler
 
 <details><summary>Chi tiết</summary>
