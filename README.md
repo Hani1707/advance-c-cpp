@@ -1578,6 +1578,10 @@ free(ptr);
 
 
 # Bài 9: 
+
+<details><summary>Chi tiết</summary>
+<p>
+
 ## 1. Khái niệm
 <details><summary>Chi tiết</summary>
 <p>
@@ -1600,7 +1604,11 @@ typedef struct Node {
 ```
 </p>
 </details>
+
 ## 2. Thao tác trên danh sách liên kết
+
+<details><summary>Chi tiết</summary>
+<p>
 
 Khởi tạo một node mới
 
@@ -1621,8 +1629,553 @@ struct Node* createNode(int value) {
 ```
 Thêm một node vào vị trí cuối cùng
 ```c
+// Hàm khởi tạo một node mới
+Node* create_node(int value) {...}
+
+// Hàm thêm một node vào cuối danh sách
+void push_back(node** array, int value) {
+    // Tạo một node mới
+    node* new_node = create_node(value);
+
+    // Nếu danh sách trống, node mới sẽ là node đầu tiên
+    if (*array == NULL) {
+        *array = new_node;
+        return;
+    }
+
+    // Duyệt đến node cuối cùng
+    node* temp = *array;
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+
+    // Gán node mới vào cuối danh sách
+    temp->next = new_node;
+}
+```
+Thêm một node vào đầu danh sách:
+```c
+void push_front(node** array, int value) {
+    node* newNode = createNode(value);
+    newNode->next = *array;
+    *array = newNode;
+}
+```
+Xóa node cuối cùng của danh sách:
+```c
+void pop_back(node** array) {
+    if (*array == NULL) return;
+
+    if ((*array)->next == NULL) {
+        free(*array);
+        *array = NULL;
+    } else {
+        node* temp = *array;
+        while (temp->next->next != NULL) {
+            temp = temp->next;
+        }
+        free(temp->next);
+        temp->next = NULL;
+    }
+}
+
+```
+Xóa node đầu tiên của danh sách
+```c
+void pop_front(node** array) {
+    if (*array == NULL) return;
+
+    node* temp = *array;
+    *array = (*array)->next;
+    free(temp);
+}
+```
+Trả về giá trị của node đầu tiên
+```c
+int front(node* array) {
+    if (array == NULL) return -1; // Hoặc giá trị lỗi khác
+    return array->data;
+}
+```
+Trả về giá trị của node cuối cùng
+```c
+int back(node* array) {
+    if (array == NULL) return -1; // Hoặc giá trị lỗi khác
+    node* temp = array;
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+    return temp->data;
+}
+```
+Thêm một node tại vị trí bất kì
+```c
+void insert(node** array, int value, int pos) {
+    node* newNode = createNode(value);
+    if (pos == 0 || *array == NULL) {
+        push_front(array, value);
+        return;
+    }
+    
+    node* temp = *array;
+    for (int i = 0; i < pos - 1 && temp->next != NULL; ++i) {
+        temp = temp->next;
+    }
+    newNode->next = temp->next;
+    temp->next = newNode;
+}
+```
+Xóa node tại vị trí bất kì
+```c
+void delete_list(node** array, int pos) {
+    if (*array == NULL) return;
+
+    if (pos == 0) {
+        pop_front(array);
+        return;
+    }
+
+    node* temp = *array;
+    for (int i = 0; i < pos - 1 && temp->next != NULL; ++i) {
+        temp = temp->next;
+    }
+    
+    if (temp->next != NULL) {
+        node* toDelete = temp->next;
+        temp->next = temp->next->next;
+        free(toDelete);
+    }
+}
+```
+Trả về kích thước của danh sách:
+```c
+int size(node* array) {
+    int count = 0;
+    node* temp = array;
+    while (temp != NULL) {
+        count++;
+        temp = temp->next;
+    }
+    return count;
+}
+```
+Trả về giá trị của node tại vị trí bất kì
+```c
+int get(node* array, int pos) {
+    node* temp = array;
+    for (int i = 0; i < pos && temp != NULL; ++i) {
+        temp = temp->next;
+    }
+    return (temp != NULL) ? temp->data : -1; // Hoặc giá trị lỗi khác
+}
+```
+Kiểm tra xem danh sách có rỗng hay không.
+```c
+bool empty(node* array) {
+    return array == NULL;
+}
+```
+
+</p>
+</details>
+
+</p>
+</details>
+
+# Bài 10: STACK-QUEUE
+
+<details><summary>Chi tiết</summary>
+<p>
 
 
+## 1. STACK
+
+<details><summary>Chi tiết</summary>
+<p>
+
+
+stack (ngăn xếp) là một cấu trúc dữ liệu có thứ tự, hoạt động theo nguyên tắc LIFO (Last In, First Out), nghĩa là phần tử được thêm vào sau cùng sẽ được lấy ra đầu tiên
+
+### Các đặc điểm chính của stack:
+#### Push
+
+Push trong stack dùng để thêm một phần tử mới vào đỉnh của stack.
+
+Stack đầy khi chỉ số của phần tử đỉnh top bằng kích thước của stack trừ đi 1 (top == size - 1).
+
+Nếu stack đã đầy mà cố tình thêm một phần tử nữa bằng cách push, thì quá trình này sẽ không thành công và sẽ gặp phải tình trạng "stack overflow"
+
+Ví dụ:
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Stack {
+    int* items;
+    int size;
+    int top;
+} Stack;
+
+void initialize( Stack *stack, int size) {
+    stack->items = (int*) malloc(sizeof(int) * size);
+    stack->size = size;
+    stack->top = -1;
+}
+
+int is_full( Stack stack) {
+    return stack.top == stack.size - 1;
+}
+
+void push( Stack *stack, int value) {
+    if (!is_full(*stack)) {
+        stack->items[++stack->top] = value;
+        printf("Pushed %d to stack\n", value);  // Hiển thị giá trị đã được push vào stack
+    } else {
+        printf("Stack overflow\n");
+    }
+}
+
+int main() {
+    Stack stack1;
+    initialize(&stack1, 5);
+
+    push(&stack1, 10);
+    push(&stack1, 20);
+    push(&stack1, 30);
+    push(&stack1, 40);
+    push(&stack1, 50);
+    push(&stack1, 60);  // Thử nghiệm khi stack đầy
+
+    return 0;
+}
+```
+#### Pop
+
+Pop trong stack dùng để xóa một phần tử ở đỉnh của stack.
+
+Khi stack không có phần tử nào thì không thể dùng pop.
+
+Nếu cố tình pop khi stack rỗng, sẽ gặp phải tình trạng gọi là "stack underflow".
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Stack {
+    int* items;
+    int size;
+    int top;
+} Stack;
+
+void initialize(Stack *stack, int size) {
+    stack->items = (int*) malloc(sizeof(int) * size);
+    stack->size = size;
+    stack->top = -1;
+}
+
+int is_empty(Stack stack) {
+    return stack.top == -1;
+}
+
+int pop(Stack *stack) {
+    if (!is_empty(*stack)) {
+        printf("Popped %d from stack\n", stack->items[stack->top]);
+        return stack->items[stack->top--];
+    } else {
+        printf("Stack underflow\n");
+        return -1;
+    }
+}
+
+int main() {
+    Stack stack1;
+    initialize(&stack1, 5);
+
+    // Push các phần tử vào stack
+    stack1.items[++stack1.top] = 10;
+    stack1.items[++stack1.top] = 20;
+    stack1.items[++stack1.top] = 30;
+
+    // Pop các phần tử từ stack đến khi stack rỗng
+    pop(&stack1);
+    pop(&stack1);
+    pop(&stack1);
+    pop(&stack1);  // Thử nghiệm khi stack rỗng
+
+    return 0;
+}
+```
+
+#### Top
+Top trong stack dùng để lấy giá trị của phần tử ở đỉnh.
+
+Khi stack không có phần tử nào (tức là stack rỗng), giá trị của top thường sẽ là -1.
+
+Cứ mỗi lần push hoặc pop, giá trị top sẽ cộng lên hoặc trừ xuống 1.
+
+Khi stack đầy, giá trị top là size - 1
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Stack {
+    int* items;
+    int size;
+    int top;
+} Stack;
+
+void initialize(Stack *stack, int size) {
+    stack->items = (int*) malloc(sizeof(int) * size);
+    stack->size = size;
+    stack->top = -1;
+}
+
+int is_empty(Stack stack) {
+    return stack.top == -1;
+}
+
+int top(Stack stack) {
+    if (!is_empty(stack)) {
+        printf("Top element: %d\n", stack.items[stack.top]);
+        return stack.items[stack.top];
+    } else {
+        printf("Stack is empty\n");
+        return -1;
+    }
+}
+
+int main() {
+    Stack stack1;
+    initialize(&stack1, 5);
+
+    // Push các phần tử vào stack
+    stack1.items[++stack1.top] = 10;
+    stack1.items[++stack1.top] = 20;
+    stack1.items[++stack1.top] = 30;
+
+    // Lấy giá trị phần tử ở đỉnh stack mà không xóa nó
+    top(stack1);
+
+    // Thử nghiệm khi stack rỗng
+    stack1.top = -1;  // Xóa các phần tử trong stack bằng cách đặt top về -1
+    top(stack1);      // Gọi top khi stack rỗng
+
+    return 0;
+}
+```
+
+</p>
+</details>
+
+## Queue
+
+<details><summary>Chi tiết</summary>
+<p>
+
+
+Queue (hàng đợi) là một cấu trúc dữ liệu hoạt động theo nguyên tắc FIFO (First In, First Out), nghĩa là phần tử được thêm vào trước sẽ được lấy ra trước. Điều này tương tự như một hàng đợi trong thực tế, nơi người đầu tiên vào hàng sẽ là người đầu tiên được phục vụ
+
+Chỉ để cập tới Circular queue, ta có hai từ khóa front và rear:
+
+front đại diện cho vị trí của phần tử đầu tiên trong hàng đợi. Đây là phần tử sẽ được lấy ra đầu tiên khi thực hiện thao tác dequeue (lấy phần tử ra).
+rear đại diện cho vị trí của phần tử cuối cùng trong hàng đợi. Đây là phần tử cuối cùng được thêm vào khi thực hiện thao tác enqueue (thêm phần tử vào).
+Khi queue rỗng, front và rear bằng -1.
+
+Khi queue đầy, (rear + 1) % size == front.
+
+Khi thực hiện dequeue, chỉ số front sẽ được tăng lên để trỏ tới phần tử tiếp theo trong hàng đợi.
+
+Khi thực hiện enqueue, rear sẽ được tăng lên để trỏ tới vị trí mới cho phần tử vừa được thêm vào hàng đợi.
+
+Nếu hàng đợi đầy, rear sẽ quay vòng theo cơ chế vòng tròn (circular queue), điều này có nghĩa là khi rear đạt tới giới hạn của mảng, nó sẽ quay về 0 để sử dụng lại vị trí cũ chỉ khi có phần tử được dequeue.
+
+### Đặc điểm chính của queue:
+#### Enqueue
+Enqueue trong hàng chờ queue được sử dụng để thêm một phần tử vào cuối hàng chờ.
+
+Chỉ có thể thực hiện enqueue khi hàng đợi không đầy.
+
+Khi hàng đợi đã đầy, việc gọi enqueue sẽ không thêm phần tử mới và chương trình sẽ báo lỗi "Queue overflow".
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Queue {
+    int* items;
+    int size;
+    int front, rear;
+} Queue;
+
+void initialize(Queue *queue, int size) 
+{
+    queue->items = (int*) malloc(sizeof(int)* size);
+    queue->front = -1;
+    queue->rear = -1;
+    queue->size = size;
+}
+
+int is_full(Queue queue) {
+    return (queue.rear + 1) % queue.size == queue.front;
+}
+
+int is_empty(Queue queue) {
+    return queue.front == -1;
+}
+
+void enqueue(Queue *queue, int value) {
+    if (!is_full(*queue)) {
+        if (is_empty(*queue)) {
+            queue->front = queue->rear = 0;
+        } else {
+            queue->rear = (queue->rear + 1) % queue->size;
+        }
+        queue->items[queue->rear] = value;
+        printf("Enqueued %d\n", value);
+    } else {
+        printf("Queue overflow\n");
+    }
+}
+
+int main() {
+    Queue queue;
+    initialize(&queue, 3);
+
+    enqueue(&queue, 10);
+    enqueue(&queue, 20);
+    enqueue(&queue, 30);
+
+    enqueue(&queue, 40);  // Hàng đợi đầy, sẽ in ra "Queue overflow"
+
+    return 0;
+}
+```
+#### Dequeue
+Dequeue trong hàng chờ queue dùng để lấy phần tử từ đầu hàng chờ ra.
+
+Chỉ có thể sử dụng dequeue khi hàng đợi không rỗng.
+
+Khi hàng đợi rỗng, việc gọi dequeue sẽ không có phần tử nào để lấy ra và chương trình sẽ báo lỗi "Queue underflow".
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Queue {
+    int* items;
+    int size;
+    int front, rear;
+} Queue;
+
+void initialize(Queue *queue, int size) 
+{
+    queue->items = (int*) malloc(sizeof(int)* size);
+    queue->front = -1;
+    queue->rear = -1;
+    queue->size = size;
+}
+
+int is_empty(Queue queue) {
+    return queue.front == -1;
+}
+
+int dequeue(Queue *queue) {
+    if (!is_empty(*queue)) {
+        int dequeued_value = queue->items[queue->front];
+        if (queue->front == queue->rear) {
+            queue->front = queue->rear = -1;
+        } else {
+            queue->front = (queue->front + 1) % queue->size;
+        }
+        printf("Dequeued %d\n", dequeued_value);
+        return dequeued_value;
+    } else {
+        printf("Queue underflow\n");
+        return -1;
+    }
+}
+
+int main() {
+    Queue queue;
+    initialize(&queue, 3);
+
+    // Giả lập việc thêm phần tử vào hàng đợi trước
+    queue.items[++queue.rear] = 10;
+    queue.items[++queue.rear] = 20;
+    queue.items[++queue.rear] = 30;
+    queue.front = 0;
+
+    // Dequeue các phần tử
+    dequeue(&queue);
+    dequeue(&queue);
+    dequeue(&queue);
+
+    // Thử nghiệm dequeue khi hàng đợi rỗng
+    dequeue(&queue);
+
+    return 0;
+}
+```
+#### Front
+Front để lấy giá trị phần tử ở đầu hàng đợi mà không xóa nó
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Queue {
+    int* items;
+    int size;
+    int front, rear;
+} Queue;
+
+void initialize(Queue *queue, int size) 
+{
+    queue->items = (int*) malloc(sizeof(int) * size);
+    queue->front = -1;
+    queue->rear = -1;
+    queue->size = size;
+}
+
+int is_empty(Queue queue) {
+    return queue.front == -1;
+}
+
+int front(Queue queue) {
+    if (!is_empty(queue)) {
+        printf("Front element: %d\n", queue.items[queue.front]);
+        return queue.items[queue.front];
+    } else {
+        printf("Queue is empty\n");
+        return -1;
+    }
+}
+
+int main() {
+    Queue queue;
+    initialize(&queue, 3);
+
+    // Giả lập việc thêm phần tử vào hàng đợi
+    queue.items[++queue.rear] = 10;
+    queue.items[++queue.rear] = 20;
+    queue.items[++queue.rear] = 30;
+    queue.front = 0;
+
+    // Lấy phần tử ở đầu hàng đợi mà không xóa nó
+    front(queue);
+
+    // Giả lập hàng đợi rỗng và kiểm tra lại
+    queue.front = queue.rear = -1;
+    front(queue);  // Hàng đợi rỗng, sẽ in "Queue is empty"
+
+    return 0;
+}
+```
+</p>
+</details>
+</p>
+</details>
+
+
+
+# Bài 11: JSON
 
 
 
