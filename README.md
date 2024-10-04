@@ -2179,6 +2179,317 @@ int main() {
 
 # BÀI 12: BINARY SEARCH-FILE OPERATIONS-CODE STANDARDS
 
+<details><summary>Chi tiết</summary>
+<p>
+
+
+## 1.Binary search
+
+<details><summary>Chi tiết</summary>
+<p>
+
+
+Tìm kiếm nhị phân là một thuật toán dùng để tìm kiếm vị trí của một phần tử trong một mảng đã được sắp xếp (tăng dần hoặc giảm dần).
+
+Ví dụ:
+```c
+// Hàm tìm kiếm nhị phân
+int binarySearch(int arr[], int left, int right, int target)
+{
+    if (right >= left)
+    {
+        int mid = (right + left) / 2;
+
+        if (arr[mid] == target) return mid;
+
+        if (arr[mid] > target) return binarySearch(arr, left, mid - 1, target);
+
+        return binarySearch(arr, mid + 1, right, target);
+    }
+
+    return -1;
+}
+```
+Nguyên lý hoạt động:
+
+**1. Xác định điểm giữa (mid) của mảng:**
+- mid = (right + left) / 2, với left là chỉ số bắt đầu và right là chỉ số kết thúc của mảng.
+
+**2. So sánh phần tử tại vị trí giữa với giá trị cần tìm (target):**
+- Nếu arr[mid] == x: Phần tử cần tìm được tìm thấy tại chỉ số mid.
+
+- Nếu arr[mid] > x: Giới hạn phạm vi tìm kiếm chỉ còn nửa bên trái mảng, do x chỉ có thể nằm trong khoảng từ left đến mid - 1.
+
+- Nếu arr[mid] < x: Giới hạn phạm vi tìm kiếm chỉ còn nửa bên phải mảng, do x chỉ có thể nằm trong khoảng từ mid + 1 đến right.
+
+**3. Lặp lại quá trình:**
+- Liên tục lặp lại bước 1 và 2 với phạm vi tìm kiếm mới cho đến khi tìm thấy phần tử hoặc phạm vi tìm kiếm trở nên rỗng (khi left > right) là không tìm thấy phần tử.
+
+</p>
+</details>
+
+## 2. File operations
+
+<details><summary>Chi tiết</summary>
+<p>
+
+
+Ngôn ngữ lập trình C cung cấp một số thư viện và hàm tiêu biểu để thực hiện các thao tác với file (.txt, .csv, v.v).
+
+CSV (Comma-Separated Values) là một định dạng file văn bản đơn giản dùng để lưu trữ dữ liệu bảng.
+
+Dữ liệu trong file CSV được phân tách bằng dấu phẩy (,) hoặc dấu phân tách khác như dấu chấm phẩy (;) hoặc tab.
+
+Dữ liệu trong file CSV được phân tách bằng dấu phẩy (,) hoặc (;) hoặc ký tự tab (\t).
+
+
+### Mở file
+
+Hàm `fopen()` trả về một con trỏ FILE, và cần được kiểm tra để đảm bảo file đã mở thành công hay chưa.
+```c
+FILE *file = fopen(const char *file_name, const char *access_mode);
+```
+Tham số truyền vào `access_mod` là quyền sử dụng file:
+- `r` : Mở file với chế độ chỉ đọc file. Nếu mở file thành công thì trả về địa chỉ của phần tử đầu tiên trong file, nếu không thì trả về NULL.
+- `rb` : Mở file với chế độ chỉ đọc file theo định dạng binary. Nếu mở file thành công thì trả về địa chỉ của phần tử đầu tiên trong file, nếu không thì trả về NULL.
+- `w` : Mở file với chế độ ghi vào file. Nếu file đã tồn tại, thì sẽ ghi đè vào nội dung bên trong file. Nếu file chưa tồn tại thì sẽ tạo một file mới. Nếu không mở được file thì trả về NULL.
+- `wb` : Mở file với chế độ ghi vào file theo định dạng binary. Nếu file đã tồn tại, thì sẽ ghi đè vào nội dung bên trong file. Nếu file chưa tồn tại thì sẽ tạo một file mới. Nếu không mở được file thì trả về NULL.
+- `a` : Mở file với chế độ nối. Nếu mở file thành công thì trả về địa chỉ của phần tử cuối cùng trong file. Nếu file chưa tồn tại thì sẽ tạo một file mới. Nếu không mở được file thì trả về NULL.
+- `ab` : Mở file với chế độ nối dưới định dạng binary. Nếu mở file thành công thì trả về địa chỉ của phần tử cuối cùng trong file. Nếu file chưa tồn tại thì sẽ tạo một file mới. Nếu không mở được file thì trả về NULL.
+- `r+` : Mở file với chế độ đọc và ghi file. Nếu mở file thành công thì trả về địa chỉ của phần tử đầu tiên trong file, nếu không thì trả về NULL.
+- `rb+` : Mở file với chế độ đọc và ghi file dưới định dạng binary. Nếu mở file thành công thì trả về địa chỉ của phần tử đầu tiên trong file, nếu không thì trả về NULL.
+
+</p>
+</details>
+
+
+### Đọc file
+
+
+### Ghi file
+
+### Một số hàm khác
+## 3. Code standards
+</p>
+</details>
+</p>
+</details>
+
+
+# Bài 13: Class
+
+Trong C++, từ khóa "class" được sử dụng để định nghĩa một lớp, là một cấu trúc dữ liệu tự định nghĩa có thể chứa dữ liệu và các hàm thành viên liên quan
+
+## Các khái niệm:
+### Access specifier (Phạm vi truy cập)
+
+Phạm vi truy cập (Access Specifiers) trong một class xác định cách các thành viên (thuộc tính và phương thức) của class có thể được truy cập từ bên ngoài. Có ba phạm vi truy cập chính:
+
+1. `private` (Riêng tư): Các thành viên được khai báo với phạm vi truy cập `private` chỉ có thể được truy cập từ bên trong chính class đó. Đây là phạm vi truy cập mặc định nếu bạn không chỉ định phạm vi khác
+
+2. `protected` (Bảo vệ): Các thành viên `protected` có thể được truy cập từ chính class và từ các class dẫn xuất (các class kế thừa class hiện tại). Không thể truy cập trực tiếp từ bên ngoài class, chỉ thông qua kế thừa hoặc từ bên trong class
+
+3. `public` (Công khai): Các thành viên `public` có thể được truy cập từ bất kỳ đâu, cả từ bên ngoài class lẫn bên trong class. Đây là phạm vi truy cập thoáng nhất, cho phép truy cập mà không có giới hạn nào
+
+### Object (Đối tượng)
+Được tạo ra từ một class và có đầy đủ các thuộc tính và phương thức mà class đó đã định nghĩa
+```c
+#include <iostream>
+using namespace std;
+
+class HinhChuNhat {
+    // Do something ...
+};
+
+int main()
+{
+    // Declar object
+    HinhChuNhat hinh;
+
+    return 0;
+}
+```
+### Property (Thuộc tính)
+Là các biến thành viên
+```c
+#include <iostream>
+using namespace std;
+
+class HinhChuNhat {
+public:
+    // Properties
+    double chieuDai;  
+    double chieuRong; 
+};
+
+int main() {
+    HinhChuNhat hinh;
+    
+    // Assign values to properties
+    hinh.chieuDai = 20;
+    hinh.chieuRong = 10;
+}
+``` 
+### Method (Phương thức)
+Là các hàm thành viên.
+```c
+#include <iostream>
+using namespace std;
+
+class HinhChuNhat {
+public:
+    // Properties
+    double chieuDai;  
+    double chieuRong; 
+
+    // Method
+    double DienTich() { 
+        return chieuDai * chieuRong;
+    }
+
+    // Method
+    void display();
+};
+
+// Implementation of the display method
+void HinhChuNhat::display() {
+    cout << "Dien tich: " << DienTich() << endl;
+}
+
+int main() {
+    HinhChuNhat hinh;
+    
+    // Assign values to properties
+    hinh.chieuDai = 20;
+    hinh.chieuRong = 10;
+
+    hinh.display();
+
+    return 0;
+}
+```
+### Constructor
+Là method đặc biệt của class.
+
+Được gọi tự động khi một object của class được tạo ra nhằm khởi tạo giá trị mặc định cho properties.
+
+Tên của constructor phải trùng với tên class
+
+Các dạng Constructor
+- Constructor không có tham số truyền vào
+```c
+#include <iostream>
+using namespace std;
+
+class HinhChuNhat {
+public:
+    // Properties
+    double chieuDai;  
+    double chieuRong; 
+
+    // Method
+    double DienTich() { 
+        return chieuDai * chieuRong;
+    }
+
+    // Method
+    void display();
+
+    // Constructor to assign default values to properties
+    HinhChuNhat() {
+        chieuDai = 20;
+        chieuRong = 30;
+    }
+    /* viết cách khác
+    // Constructor using initializer list
+    HinhChuNhat() : chieuDai(10.5), chieuRong(20) {}
+    */
+};
+
+// Implementation of the display method
+void HinhChuNhat::display() {
+    cout << "Dien tich: " << DienTich() << endl;
+}
+
+int main() {
+    // Create a object
+    HinhChuNhat hinh;
+    
+    hinh.display();
+
+    return 0;
+}
+```
+- Constructor có tham số truyền vào
+```c
+#include <iostream>
+using namespace std;
+
+class HinhChuNhat {
+public:
+    double chieuDai;  // property
+    double chieuRong; // property
+
+    // Constructor with parameters
+    HinhChuNhat(int a, int b) {
+        chieuDai = a;
+        chieuRong = b;
+    }
+
+    // Method to calculate area
+    double DienTich() { 
+        return chieuDai * chieuRong;
+    }
+
+    // Method to display area
+    void display();
+};
+
+// Implementation of the display method
+void HinhChuNhat::display() {
+    cout << "Dien tich: " << DienTich() << endl;
+}
+
+int main() {
+    // Create a object but pass parameters.
+    HinhChuNhat hinh(15, 25);
+
+    hinh.display();
+
+    return 0;
+}
+```
+Viết cách khác
+```c
+#include <iostream>
+using namespace std;
+
+class HinhChuNhat {
+public:
+    double chieuDai;  
+    double chieuRong; 
+
+    // Constructor with default parameters
+    HinhChuNhat(int a = 3, int b = 5) {
+        chieuDai = a;
+        chieuRong = b;
+    }
+    // Do something ...
+};
+
+int main() {
+    // This will use the default values: chieuDai = 3, chieuRong = 5
+    HinhChuNhat hinh1;
+
+     // This will use the provided values: chieuDai = 10, chieuRong = 20
+    HinhChuNhat hinh2(10, 20);
+    return 0;
+}
+```
+
+
+
+
 
 
 
