@@ -2487,6 +2487,181 @@ int main() {
 }
 ```
 
+# Bài 14: OOP
+## 1. Tính đóng gói (Encapsulation)
+Tính đóng gói là ẩn đi các property “mật” khỏi người dùng.
+
+Và để làm được điều này, ta sẽ khai báo các property ở quyền truy cập private (tức là không thể truy cập trực tiếp tới các property này)
+```c
+class SinhVien{
+    private:
+        // Tính đóng gói-ẩn đi các property
+        string name;
+        int id;
+};
+```
+Trong trường hợp muốn đọc hoặc ghi các property này, thì ta truy cập gián tiếp bằng các method ở quyền truy cập public.
+
+Bài trước đã học method đặc biệt để làm việc với property là Contructor và Destructor, bài này có thêm method đặc biệt Setter và Getter
+- Getter: Được sử dụng để lấy giá trị của một thuộc tính property
+- Setter: Được sử dụng để đặt, thay đổi giá trị và kiểm tra tính hợp lệ của property
+
+Ví dụ:
+```c
+#include <iostream>
+using namespace std;
+
+class SinhVien {
+private:
+    string ten;
+    int tuoi;
+
+public:
+    // Constructor
+    SinhVien(string ten, int tuoi) {
+        this->ten = ten;
+        this->tuoi = tuoi;
+    }
+
+    // Setter cho thuộc tính `ten`
+    void setTen(string ten) {
+        this->ten = ten;
+    }
+
+    // Getter cho thuộc tính `ten`
+    string getTen() {
+        return ten;
+    }
+
+    // Setter cho thuộc tính `tuoi`
+    void setTuoi(int tuoi) {
+        if (tuoi > 0) {
+            this->tuoi = tuoi;
+        }
+    }
+
+    // Getter cho thuộc tính `tuoi`
+    int getTuoi() {
+        return tuoi;
+    }
+};
+
+int main() {
+    SinhVien sv("Lan", 20);
+    cout << "Ten: " << sv.getTen() << ", Tuoi: " << sv.getTuoi() << endl;
+
+    sv.setTen("Mai");
+    sv.setTuoi(21);
+
+    cout << "Ten moi: " << sv.getTen() << ", Tuoi moi: " << sv.getTuoi() << endl;
+
+    return 0;
+}
+```
+Trong ví dụ trên:
+- Biến `ten` và `tuoi` là các thành viên `private` của lớp `SinhVien`, nghĩa là chúng không thể truy cập trực tiếp từ bên ngoài lớp
+- Các phương thức `setTen`, `getTen`, `setTuoi`, và `getTuoi` được định nghĩa để truy cập và cập nhật giá trị của `ten` và `tuoi`. Điều này giúp kiểm soát cách dữ liệu của lớp được sử dụng và thay đổi
+
+## 2. Tính kế thừa (Inheritance)
+Tính kế thừa (inheritance) là một đặc trưng quan trọng của lập trình hướng đối tượng (OOP). Cho phép một lớp (class) mới được tạo ra dựa trên lớp đã tồn tại, kế thừa lại các thuộc tính (biến thành viên) và hành vi (phương thức) của lớp đó. Lớp mới được gọi là lớp dẫn xuất (derived class) hoặc lớp con (child class), còn lớp đã tồn tại được gọi là lớp cơ sở (base class) hoặc lớp cha (parent class)
+
+### Các loại kế thừa
+#### 1. Kế thừa công khai (public inheritance)
+Trong kế thừa `public`, tất cả các thành viên `public` của lớp cơ sở vẫn giữ nguyên mức truy cập `public` trong lớp dẫn xuất. Các thành viên `protected` của lớp cơ sở sẽ trở thành `protected` trong lớp dẫn xuất. Các thành viên `private` của lớp cơ sở không thể truy cập trực tiếp trong lớp dẫn xuất
+
+Ví dụ:
+```c
+#include <iostream>
+using namespace std;
+
+class DongVat {
+public:
+    void an() {
+        cout << "Dong vat dang an." << endl;
+    }
+protected:
+    void ngu() {
+        cout << "Dong vat dang ngu." << endl;
+    }
+};
+
+class Meo : public DongVat {
+public:
+    void keu() {
+        cout << "Meo keu: Meo meo!" << endl;
+    }
+    void hanhDong() {
+        an(); // Có thể truy cập `an()` vì nó là `public`
+        ngu(); // Có thể truy cập `ngu()` vì nó là `protected`
+    }
+};
+
+int main() {
+    Meo conMeo;
+    conMeo.an(); // Gọi được vì `an()` là `public`
+    conMeo.keu(); // Gọi được vì `keu()` là `public`
+    // conMeo.ngu(); // Không gọi được vì `ngu()` là `protected`
+
+    conMeo.hanhDong(); // Gọi được vì `hanhDong()` là `public` và có thể truy cập `an()` và `ngu()`
+
+    return 0;
+}
+```
+Kết quả:
+```c
+Dong vat dang an.
+Meo keu: Meo meo!
+Dong vat dang an.
+Dong vat dang ngu.
+```
+Trong ví dụ trên:
+- `Meo` kế thừa `public` từ `DongVat`, nên `an()` và `ngu()` giữ nguyên quyền truy cập của chúng (`public` và `protected`)
+- `conMeo` có thể gọi trực tiếp `an()` và `keu()` nhưng không thể gọi trực tiếp `ngu()`
+
+#### 2. Kế thừa bảo vệ (protected inheritance)
+Trong kế thừa `protected`, tất cả các thành viên `public` và `protected` của lớp cơ sở đều trở thành `protected` trong lớp dẫn xuất. Điều này có nghĩa là chúng chỉ có thể được truy cập từ bên trong lớp dẫn xuất và các lớp kế thừa tiếp theo
+
+Ví dụ:
+```c
+class DongVat {
+public:
+    void an() {
+        cout << "Dong vat dang an." << endl;
+    }
+protected:
+    void ngu() {
+        cout << "Dong vat dang ngu." << endl;
+    }
+};
+
+class Cho : protected DongVat {
+public:
+    void sua() {
+        cout << "Cho sua: Gau gau!" << endl;
+    }
+    void hanhDong() {
+        an(); // Có thể truy cập `an()` vì nó trở thành `protected`
+        ngu(); // Có thể truy cập `ngu()` vì nó là `protected`
+    }
+};
+
+int main() {
+    Cho conCho;
+    // conCho.an(); // Không gọi được vì `an()` là `protected`
+    conCho.sua(); // Gọi được vì `sua()` là `public`
+    conCho.hanhDong(); // Gọi được vì `hanhDong()` là `public`
+
+    return 0;
+}
+```
+Kết quả:
+```c
+Cho sua: Gau gau!
+Dong vat dang an.
+Dong vat dang ngu.
+```
+Trong ví dụ trên:
+- `Cho` kế thừa `protected` từ `DongVat`, nên cả `an()` và `ngu()` đều trở thành `protected`
 
 
 
