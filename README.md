@@ -2580,11 +2580,17 @@ Trong ví dụ trên:
 - Các phương thức `setTen`, `getTen`, `setTuoi`, và `getTuoi` được định nghĩa để truy cập và cập nhật giá trị của `ten` và `tuoi`. Điều này giúp kiểm soát cách dữ liệu của lớp được sử dụng và thay đổi
 
 ## 2. Tính kế thừa (Inheritance)
-Tính kế thừa (inheritance) là một đặc trưng quan trọng của lập trình hướng đối tượng (OOP). Cho phép một lớp (class) mới được tạo ra dựa trên lớp đã tồn tại, kế thừa lại các thuộc tính (biến thành viên) và hành vi (phương thức) của lớp đó. Lớp mới được gọi là lớp dẫn xuất (derived class) hoặc lớp con (child class), còn lớp đã tồn tại được gọi là lớp cơ sở (base class) hoặc lớp cha (parent class)
+Tính kế thừa là một đặc trưng quan trọng của lập trình hướng đối tượng (OOP). 
+
+Cho phép một lớp (class) mới được tạo ra dựa trên lớp đã tồn tại, kế thừa lại các thuộc tính (biến thành viên) và hành vi (phương thức) của lớp đó. 
+
+Lớp mới được gọi là lớp dẫn xuất (derived class) hoặc lớp con (child class), còn lớp đã tồn tại được gọi là lớp cơ sở (base class) hoặc lớp cha (parent class)
 
 ### Các loại kế thừa
 #### 1. Kế thừa công khai (public inheritance)
-Trong kế thừa `public`, tất cả các thành viên `public` của lớp cơ sở vẫn giữ nguyên mức truy cập `public` trong lớp dẫn xuất. Các thành viên `protected` của lớp cơ sở sẽ trở thành `protected` trong lớp dẫn xuất. Các thành viên `private` của lớp cơ sở không thể truy cập trực tiếp trong lớp dẫn xuất
+Tất cả các thành viên `public` của lớp cơ sở vẫn giữ nguyên mức truy cập `public` trong lớp dẫn xuất. 
+
+Các thành viên `protected` của lớp cơ sở sẽ trở thành `protected` trong lớp dẫn xuất. Các thành viên `private` của lớp cơ sở không thể truy cập trực tiếp trong lớp dẫn xuất
 
 Ví dụ:
 ```c
@@ -2636,7 +2642,9 @@ Trong ví dụ trên:
 - `conMeo` có thể gọi trực tiếp `an()` và `keu()` nhưng không thể gọi trực tiếp `ngu()`
 
 #### 2. Kế thừa bảo vệ (protected inheritance)
-Trong kế thừa `protected`, tất cả các thành viên `public` và `protected` của lớp cơ sở đều trở thành `protected` trong lớp dẫn xuất. Điều này có nghĩa là chúng chỉ có thể được truy cập từ bên trong lớp dẫn xuất và các lớp kế thừa tiếp theo
+Tất cả các thành viên `public` và `protected` của lớp cơ sở đều trở thành `protected` trong lớp dẫn xuất.
+ 
+ Điều này có nghĩa là chúng chỉ có thể được truy cập từ bên trong lớp dẫn xuất và các lớp kế thừa tiếp theo
 
 Ví dụ:
 ```c
@@ -2679,7 +2687,54 @@ Dong vat dang ngu.
 ```
 Trong ví dụ trên:
 - `Cho` kế thừa `protected` từ `DongVat`, nên cả `an()` và `ngu()` đều trở thành `protected`
+- `conCho` không thể gọi `an()` trực tiếp vì nó là `protected`, nhưng có thể gọi `hanhDong()` vì phương thức này là `public` trong Cho
 
+#### 3. Kế thừa riêng tư (private inheritance)
+Tất cả các thành viên `public` và `protected` của lớp cơ sở đều trở thành `private` trong lớp dẫn xuất. 
+
+Điều này có nghĩa là chúng chỉ có thể được truy cập từ bên trong lớp dẫn xuất, và không thể được truy cập từ bất kỳ lớp nào khác, kể cả lớp kế thừa tiếp theo
+
+```c
+class DongVat {
+public:
+    void an() {
+        cout << "Dong vat dang an." << endl;
+    }
+protected:
+    void ngu() {
+        cout << "Dong vat dang ngu." << endl;
+    }
+};
+
+class Chim : private DongVat {
+public:
+    void hot() {
+        cout << "Chim hot: Chip chip!" << endl;
+    }
+    void hanhDong() {
+        an(); // Có thể truy cập `an()` vì nó trở thành `private`
+        ngu(); // Có thể truy cập `ngu()` vì nó là `private`
+    }
+};
+
+int main() {
+    Chim conChim;
+    // conChim.an(); // Không gọi được vì `an()` là `private`
+    conChim.hot(); // Gọi được vì `hot()` là `public`
+    conChim.hanhDong(); // Gọi được vì `hanhDong()` là `public`
+
+    return 0;
+}
+```
+Kết quả:
+```c
+Chim hot: Chip chip!
+Dong vat dang an.
+Dong vat dang ngu.
+```
+Trong ví dụ trên:
+- `Chim` kế thừa `private` từ `DongVat`, nên `an()` và `ngu()` đều trở thành `private`
+- `conChim` không thể gọi `an()` hoặc `ngu()` trực tiếp, nhưng có thể gọi `hanhDong()`, vì phương thức này là `public` trong `Chim` và có thể truy cập `an()` và `ngu()` bên trong
 
 </p>
 </details>
