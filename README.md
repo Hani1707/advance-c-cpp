@@ -2278,9 +2278,16 @@ Tham số truyền vào `access_mod` là quyền sử dụng file:
 
 # Bài 13: Class
 
+<details><summary>Chi tiết</summary>
+<p>
 Trong C++, từ khóa "class" được sử dụng để định nghĩa một lớp, là một cấu trúc dữ liệu tự định nghĩa có thể chứa dữ liệu và các hàm thành viên liên quan
 
+
 ## Các khái niệm:
+
+<details><summary>Chi tiết</summary>
+<p>
+
 ### Access specifier (Phạm vi truy cập)
 
 Phạm vi truy cập (Access Specifiers) trong một class xác định cách các thành viên (thuộc tính và phương thức) của class có thể được truy cập từ bên ngoài. Có ba phạm vi truy cập chính:
@@ -2487,7 +2494,17 @@ int main() {
 }
 ```
 
+</p>
+</details>
+
+</p>
+</details>
+
 # Bài 14: OOP
+
+<details><summary>Chi tiết</summary>
+<p>
+
 ## 1. Tính đóng gói (Encapsulation)
 Tính đóng gói là ẩn đi các property “mật” khỏi người dùng.
 
@@ -2664,7 +2681,8 @@ Trong ví dụ trên:
 - `Cho` kế thừa `protected` từ `DongVat`, nên cả `an()` và `ngu()` đều trở thành `protected`
 
 
-
+</p>
+</details>
 
 
 
