@@ -2741,6 +2741,9 @@ Trong ví dụ trên:
 
  Giúp tăng tính linh hoạt và khả năng mở rộng của chương trình, đồng thời cho phép các đối tượng của các lớp khác nhau xử lý chung qua cùng một giao diện
 
+áđấ
+
+
 </p>
 </details>
 
