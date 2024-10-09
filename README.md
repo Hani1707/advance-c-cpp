@@ -2506,6 +2506,11 @@ int main() {
 <p>
 
 ## 1. Tính đóng gói (Encapsulation)
+
+<details><summary>Chi tiết</summary>
+<p>
+
+
 Tính đóng gói là ẩn đi các property “mật” khỏi người dùng.
 
 Và để làm được điều này, ta sẽ khai báo các property ở quyền truy cập private (tức là không thể truy cập trực tiếp tới các property này)
@@ -2579,7 +2584,15 @@ Trong ví dụ trên:
 - Biến `ten` và `tuoi` là các thành viên `private` của lớp `SinhVien`, nghĩa là chúng không thể truy cập trực tiếp từ bên ngoài lớp
 - Các phương thức `setTen`, `getTen`, `setTuoi`, và `getTuoi` được định nghĩa để truy cập và cập nhật giá trị của `ten` và `tuoi`. Điều này giúp kiểm soát cách dữ liệu của lớp được sử dụng và thay đổi
 
+</p>
+</details>
+
 ## 2. Tính kế thừa (Inheritance)
+
+<details><summary>Chi tiết</summary>
+<p>
+
+
 Tính kế thừa là một đặc trưng quan trọng của lập trình hướng đối tượng (OOP). 
 
 Cho phép một lớp (class) mới được tạo ra dựa trên lớp đã tồn tại, kế thừa lại các thuộc tính (biến thành viên) và hành vi (phương thức) của lớp đó. 
@@ -2736,16 +2749,228 @@ Trong ví dụ trên:
 - `Chim` kế thừa `private` từ `DongVat`, nên `an()` và `ngu()` đều trở thành `private`
 - `conChim` không thể gọi `an()` hoặc `ngu()` trực tiếp, nhưng có thể gọi `hanhDong()`, vì phương thức này là `public` trong `Chim` và có thể truy cập `an()` và `ngu()` bên trong
 
+
+</p>
+</details>
+
 ## 3. Tính đa hình (polymorphism) 
+
+<details><summary>Chi tiết</summary>
+<p>
+
  Cho phép một đối tượng hoặc phương thức có thể biểu hiện theo nhiều cách khác nhau
 
  Giúp tăng tính linh hoạt và khả năng mở rộng của chương trình, đồng thời cho phép các đối tượng của các lớp khác nhau xử lý chung qua cùng một giao diện
 
-áđấ
+### Có 2 loại đa hình:
+#### 1. Đa hình tĩnh (Compile-time polymorphism):
+- Được xác định trong quá trình biên dịch
+- Có thể đạt được thông qua nạp chồng hàm (function overloading) và nạp chồng toán tử (operator overloading)
+
+Nạp chồng hàm (Function Overloading): 
+
+Cho phép nhiều hàm có cùng tên nhưng khác nhau về kiểu tham số hoặc số lượng tham số. 
+
+Trình biên dịch sẽ quyết định hàm nào được gọi dựa trên các tham số truyền vào
+
+Ví dụ:
+```c
+#include <iostream>
+using namespace std;
+
+class TinhToan {
+public:
+    // Hàm cộng hai số nguyên
+    int cong(int a, int b) {
+        return a + b;
+    }
+
+    // Hàm cộng ba số nguyên
+    int cong(int a, int b, int c) {
+        return a + b + c;
+    }
+
+    // Hàm cộng hai số thực
+    double cong(double a, double b) {
+        return a + b;
+    }
+};
+
+int main() {
+    TinhToan tt;
+    cout << "Cong 2 so nguyen: " << tt.cong(3, 4) << endl; // Gọi hàm cộng 2 số nguyên
+    cout << "Cong 3 so nguyen: " << tt.cong(3, 4, 5) << endl; // Gọi hàm cộng 3 số nguyên
+    cout << "Cong 2 so thuc: " << tt.cong(3.5, 4.5) << endl; // Gọi hàm cộng 2 số thực
+    return 0;
+}
+```
+Kết quả:
+```
+Cong 2 so nguyen: 7
+Cong 3 so nguyen: 12
+Cong 2 so thuc: 8
+```
+
+Nạp chồng toán tử (Operator Overloading):
+
+ Cho phép thay đổi cách hoạt động của các toán tử để làm việc với các đối tượng của lớp do người dùng định nghĩa
+
+```c
+#include <iostream>
+using namespace std;
+
+class SoPhuc {
+public:
+    int thuc, ao;
+
+    SoPhuc(int t = 0, int a = 0) {
+        thuc = t;
+        ao = a;
+    }
+
+    // Nạp chồng toán tử `+` để cộng hai số phức
+    SoPhuc operator + (SoPhuc const &obj) {
+        SoPhuc res;
+        res.thuc = thuc + obj.thuc;
+        res.ao = ao + obj.ao;
+        return res;
+    }
+
+    void hienThi() {
+        cout << thuc << " + " << ao << "i" << endl;
+    }
+};
+
+int main() {
+    SoPhuc so1(3, 4), so2(1, 2);
+    SoPhuc tong = so1 + so2; // Sử dụng toán tử `+` đã nạp chồng
+    tong.hienThi();
+    return 0;
+}
+```
+Kết quả:
+```
+4 + 6i
+```
+
+#### 2. Đa hình động (Runtime polymorphism)
+**Hàm ảo (Virtual Functions):**
+
+Cho phép gọi hàm được ghi đè (override) trong lớp dẫn xuất thông qua con trỏ hoặc tham chiếu của lớp cơ sở
+
+Giúp đối tượng lớp dẫn xuất có thể thể hiện hành vi riêng của nó ngay cả khi được gọi thông qua lớp cơ sở
+
+Ví dụ:
+```c
+#include <iostream>
+using namespace std;
+
+class DongVat {
+public:
+    virtual void keu() { // Hàm ảo
+        cout << "Dong vat keu." << endl;
+    }
+};
+
+class Cho : public DongVat {
+public:
+    void keu() override {
+        cout << "Cho keu: Gau gau!" << endl;
+    }
+};
+
+class Meo : public DongVat {
+public:
+    void keu() override {
+        cout << "Meo keu: Meo meo!" << endl;
+    }
+};
+
+int main() {
+    DongVat *dongVat1 = new Cho();
+    DongVat *dongVat2 = new Meo();
+
+    dongVat1->keu(); // Gọi hàm `keu()` của lớp `Cho`
+    dongVat2->keu(); // Gọi hàm `keu()` của lớp `Meo`
+
+    delete dongVat1;
+    delete dongVat2;
+
+    return 0;
+}
+```
+Kết quả:
+```
+Cho keu: Gau gau!
+Meo keu: Meo meo!
+```
+
+Trong ví dụ trên :
+- `keu()` trong DongVat là hàm ảo (`virtual`), cho phép ghi đè trong các lớp dẫn xuất như `Cho` và `Meo`
+- Khi gọi `keu()` thông qua con trỏ `DongVat`, hàm `keu()` tương ứng của lớp dẫn xuất (`Cho` hoặc `Meo`) sẽ được gọi nhờ tính đa hình động
+
+**Lớp trừu tượng (Abstract Class)**
+
+Lớp chứa ít nhất một hàm thuần ảo (pure virtual function)
+
+Cú pháp `virtual void ham() = 0;`
+
+Lớp trừu tượng không thể tạo đối tượng trực tiếp mà chỉ có thể làm lớp cơ sở cho các lớp dẫn xuất
+```c
+#include <iostream>
+using namespace std;
+
+class Hinh {
+public:
+    virtual void ve() = 0; // Hàm thuần ảo, làm cho `Hinh` trở thành lớp trừu tượng
+};
+
+class HinhTron : public Hinh {
+public:
+    void ve() override {
+        cout << "Ve hinh tron." << endl;
+    }
+};
+
+class HinhChuNhat : public Hinh {
+public:
+    void ve() override {
+        cout << "Ve hinh chu nhat." << endl;
+    }
+};
+
+int main() {
+    Hinh* hinh1 = new HinhTron();
+    Hinh* hinh2 = new HinhChuNhat();
+
+    hinh1->ve(); // Gọi `ve()` của `HinhTron`
+    hinh2->ve(); // Gọi `ve()` của `HinhChuNhat`
+
+    delete hinh1;
+    delete hinh2;
+
+    return 0;
+}
+```
+Kết quả:
+```
+Ve hinh tron.
+Ve hinh chu nhat.
+```
+Trong ví dụ trên:
+- `Hinh` là lớp trừu tượng vì có hàm thuần ảo `ve()`
+- `HinhTron` và `HinhChuNhat` kế thừa từ `Hinh` và định nghĩa lại phương thức `ve()`
+- Có thể sử dụng con trỏ `Hinh` để gọi các phương thức `ve()` của các đối tượng `HinhTron` và `HinhChuNhat`
+
+</p>
+</details>
 
 
 </p>
 </details>
+
+# BÀI 15: VIRTUAL FUNCTION
+
 
 
 
