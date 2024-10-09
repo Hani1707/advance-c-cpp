@@ -2854,62 +2854,9 @@ Kết quả:
 ```
 
 #### 2. Đa hình động (Runtime polymorphism)
-**Hàm ảo (Virtual Functions):**
 
-Cho phép gọi hàm được ghi đè (override) trong lớp dẫn xuất thông qua con trỏ hoặc tham chiếu của lớp cơ sở
 
-Giúp đối tượng lớp dẫn xuất có thể thể hiện hành vi riêng của nó ngay cả khi được gọi thông qua lớp cơ sở
-
-Ví dụ:
-```c
-#include <iostream>
-using namespace std;
-
-class DongVat {
-public:
-    virtual void keu() { // Hàm ảo
-        cout << "Dong vat keu." << endl;
-    }
-};
-
-class Cho : public DongVat {
-public:
-    void keu() override {
-        cout << "Cho keu: Gau gau!" << endl;
-    }
-};
-
-class Meo : public DongVat {
-public:
-    void keu() override {
-        cout << "Meo keu: Meo meo!" << endl;
-    }
-};
-
-int main() {
-    DongVat *dongVat1 = new Cho();
-    DongVat *dongVat2 = new Meo();
-
-    dongVat1->keu(); // Gọi hàm `keu()` của lớp `Cho`
-    dongVat2->keu(); // Gọi hàm `keu()` của lớp `Meo`
-
-    delete dongVat1;
-    delete dongVat2;
-
-    return 0;
-}
-```
-Kết quả:
-```
-Cho keu: Gau gau!
-Meo keu: Meo meo!
-```
-
-Trong ví dụ trên :
-- `keu()` trong DongVat là hàm ảo (`virtual`), cho phép ghi đè trong các lớp dẫn xuất như `Cho` và `Meo`
-- Khi gọi `keu()` thông qua con trỏ `DongVat`, hàm `keu()` tương ứng của lớp dẫn xuất (`Cho` hoặc `Meo`) sẽ được gọi nhờ tính đa hình động
-
-**Lớp trừu tượng (Abstract Class)**
+ #### Tính trừu tượng (Abstract Class)
 
 Lớp chứa ít nhất một hàm thuần ảo (pure virtual function)
 
@@ -2970,7 +2917,74 @@ Trong ví dụ trên:
 </details>
 
 # BÀI 15: VIRTUAL FUNCTION
+## 1. Đa hình tại thời điểm chạy (Run-time Polymorphism)
+Đa hình tại thời điểm chạy xảy ra khi việc quyết định method nào (phiên bản của class cha hay của class con) sẽ được gọi ra ngay tại thời điểm chạy chương trình.
 
+Ưu điểm là giúp chương trình linh hoạt hơn, cho phép việc mở rộng chức năng mà không cần sửa đổi mã nguồn hiện tại.
+
+Tính đa hình này thực hiện bằng cách sử dụng hàm ảo (virtual function) ở class cha và ghi đè lên hàm ảo ở class con
+### Đặc điểm của đa hình tại thời điểm chạy (Run-time Polymorphism)
+#### 1.Hàm ảo (Virtual function) và ghi đè hàm ảo (Override)
+**Hàm ảo (Virtual Functions):**
+
+Cho phép gọi hàm được ghi đè (override) trong lớp dẫn xuất thông qua con trỏ hoặc tham chiếu của lớp cơ sở
+
+Giúp đối tượng lớp dẫn xuất có thể thể hiện hành vi riêng của nó ngay cả khi được gọi thông qua lớp cơ sở
+
+Ví dụ:
+```c
+#include <iostream>
+using namespace std;
+
+class DongVat {
+public:
+    virtual void keu() { // Hàm ảo
+        cout << "Dong vat keu." << endl;
+    }
+};
+
+class Cho : public DongVat {
+public:
+    void keu() override {
+        cout << "Cho keu: Gau gau!" << endl;
+    }
+};
+
+class Meo : public DongVat {
+public:
+    void keu() override {
+        cout << "Meo keu: Meo meo!" << endl;
+    }
+};
+
+int main() {
+    DongVat *dongVat1 = new Cho();
+    DongVat *dongVat2 = new Meo();
+
+    dongVat1->keu(); // Gọi hàm `keu()` của lớp `Cho`
+    dongVat2->keu(); // Gọi hàm `keu()` của lớp `Meo`
+
+    delete dongVat1;
+    delete dongVat2;
+
+    return 0;
+}
+```
+Kết quả:
+```
+Cho keu: Gau gau!
+Meo keu: Meo meo!
+```
+
+Trong ví dụ trên :
+- `keu()` trong DongVat là hàm ảo (`virtual`), cho phép ghi đè trong các lớp dẫn xuất như `Cho` và `Meo`
+- Khi gọi `keu()` thông qua con trỏ `DongVat`, hàm `keu()` tương ứng của lớp dẫn xuất (`Cho` hoặc `Meo`) sẽ được gọi nhờ tính đa hình động
+
+**Ghi đè hàm ảo (Override)**
+
+Là việc cung cấp một phương thức trong class con với cùng tên, cùng kiểu trả về, và cùng danh sách tham số như một phương thức đã được định nghĩa trong class cha
+
+Khi một phương thức được ghi đè, phương thức của class con sẽ được gọi thay vì phương thức của class cha khi đối tượng thuộc lớp con được sử dụng
 
 
 
