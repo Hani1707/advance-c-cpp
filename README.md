@@ -2813,45 +2813,6 @@ Cong 2 so thuc: 8
 
 Nạp chồng toán tử (Operator Overloading):
 
- Cho phép thay đổi cách hoạt động của các toán tử để làm việc với các đối tượng của lớp do người dùng định nghĩa
-
-```c
-#include <iostream>
-using namespace std;
-
-class SoPhuc {
-public:
-    int thuc, ao;
-
-    SoPhuc(int t = 0, int a = 0) {
-        thuc = t;
-        ao = a;
-    }
-
-    // Nạp chồng toán tử `+` để cộng hai số phức
-    SoPhuc operator + (SoPhuc const &obj) {
-        SoPhuc res;
-        res.thuc = thuc + obj.thuc;
-        res.ao = ao + obj.ao;
-        return res;
-    }
-
-    void hienThi() {
-        cout << thuc << " + " << ao << "i" << endl;
-    }
-};
-
-int main() {
-    SoPhuc so1(3, 4), so2(1, 2);
-    SoPhuc tong = so1 + so2; // Sử dụng toán tử `+` đã nạp chồng
-    tong.hienThi();
-    return 0;
-}
-```
-Kết quả:
-```
-4 + 6i
-```
 
 #### 2. Đa hình động (Runtime polymorphism)
 
@@ -2985,6 +2946,174 @@ Trong ví dụ trên :
 Là việc cung cấp một phương thức trong class con với cùng tên, cùng kiểu trả về, và cùng danh sách tham số như một phương thức đã được định nghĩa trong class cha
 
 Khi một phương thức được ghi đè, phương thức của class con sẽ được gọi thay vì phương thức của class cha khi đối tượng thuộc lớp con được sử dụng
+```c
+#include <iostream>
+using namespace std;
+
+class Base {
+public:
+    virtual void display() {  // Hàm ảo
+        cout << "Hiển thị từ lớp cơ sở" << endl;
+    }
+};
+
+class Derived : public Base {
+public:
+    void display() override { // Ghi đè phương thức display() của class cha
+        cout << "Hiển thị từ lớp dẫn xuất" << endl;
+    }
+};
+
+int main() {
+    Base* obj = new Derived();
+    obj->display(); // Kết quả: "Hiển thị từ lớp dẫn xuất"
+
+    delete obj;
+    return 0;
+}
+```
+
+Như vậy `override` sẽ:
+- Cung cấp một cách triển khai khác của một phương thức trong class con, phù hợp hơn với nhu cầu của class con
+- Cho phép hành vi khác nhau giữa các lớp kế thừa, mặc dù sử dụng cùng một tên phương thức
+#### 2.Hàm ảo thuần túy (Pure Virtual Function)
+Hàm ảo thuần túy là một hàm ảo không có phần định nghĩa trong class cha, được khai báo với cú pháp = 0
+
+Ví dụ:
+```c
+#include <iostream>
+using namespace std;
+
+// Lớp trừu tượng Animal với hàm ảo thuần túy sound()
+class Animal {
+public:
+    // Hàm ảo thuần túy
+    virtual void sound() = 0;
+};
+
+class Dog : public Animal {
+public:
+    void sound() override {
+        cout << "Gâu gâu" << endl;
+    }
+};
+
+class Cat : public Animal {
+public:
+    void sound() override {
+        cout << "Meo meo" << endl;
+    }
+};
+
+int main() {
+    Animal* animal1 = new Dog();
+    Animal* animal2 = new Cat();
+    
+    animal1->sound(); // Kết quả: "Gâu gâu"
+    animal2->sound(); // Kết quả: "Meo meo"
+
+    delete animal1;
+    delete animal2;
+
+    return 0;
+}
+```
+- Lớp `Animal` là một lớp trừu tượng vì nó chứa hàm ảo thuần túy `sound()`. Điều này có nghĩa là không thể tạo đối tượng trực tiếp từ lớp `Animal`
+- Các lớp `Dog` và `Cat` kế thừa từ `Animal` và buộc phải ghi đè phương thức `sound()`, vì `sound()` là hàm ảo thuần túy trong class cha
+- Trong hàm `main()`, sử dụng con trỏ kiểu `Animal*` để trỏ đến các đối tượng `Dog` và `Cat`
+- Khi gọi `sound()` trên các con trỏ `animal1` và `animal2`, phương thức `sound()` của `Dog` và `Cat` được gọi đúng với âm thanh đặc trưng của từng loại động vật
+
+## 2. Đa kế thừa:
+Cho phép một class kế thừa từ nhiều class khác
+
+Thường dùng để kết hợp các chức năng từ nhiều class
+
+Ví dụ:
+```c
+#include <iostream>
+using namespace std;
+
+// Lớp cơ bản Animal
+class Animal {
+public:
+    void eat() {
+        cout << "Động vật ăn." << endl;
+    }
+};
+
+// Lớp CanSwim
+class CanSwim {
+public:
+    void swim() {
+        cout << "Động vật bơi." << endl;
+    }
+};
+
+// Lớp CanFly
+class CanFly {
+public:
+    void fly() {
+        cout << "Động vật bay." << endl;
+    }
+};
+
+// Lớp Duck kế thừa từ Animal, CanSwim và CanFly
+class Duck : public Animal, public CanSwim, public CanFly {
+public:
+    void sound() {
+        cout << "Vịt kêu cạp cạp." << endl;
+    }
+};
+
+int main() {
+    Duck duck;
+    duck.eat();   // Kết quả: "Động vật ăn."
+    duck.swim();  // Kết quả: "Động vật bơi."
+    duck.fly();   // Kết quả: "Động vật bay."
+    duck.sound(); // Kết quả: "Vịt kêu cạp cạp."
+
+    return 0;
+}
+```
+Trong ví dụ trên:
+- Lớp `Animal` cung cấp phương thức `eat()` (ăn).
+- Lớp `CanSwim` cung cấp phương thức `swim()` (bơi).
+- Lớp `CanFly` cung cấp phương thức `fly()` (bay).
+- Lớp `Duck` kế thừa từ cả `Animal`, `CanSwim`, và `CanFly`, nghĩa là `Duck` có thể sử dụng tất cả các phương thức `eat()`, `swim()`, và `fly()`, ngoài ra còn có phương thức riêng `sound()` để thể hiện tiếng kêu của vịt.
+- Khi gọi các phương thức `eat()`, `swim()`, `fly()`, và `sound()` trên đối tượng `duck`, chương trình sẽ thực thi các hành vi tương ứng
+
+### Diamond problem
+Diamond problem xảy ra khi một lớp con kế thừa từ hai lớp cha, và cả hai lớp cha này đều kế thừa từ một lớp cha chung. Điều này dẫn đến tình huống lớp con có thể chứa các thuộc tính hoặc phương thức trùng tên từ lớp cha chung, gây ra xung đột trong việc xác định nên sử dụng thành phần nào
+
+Kế thừa ảo giúp xử lý diamond problem trong đa kế thừa
+
+### Kế thừa ảo:
+Chỉ có một bản sao duy nhất của lớp cơ sở chung được kế thừa sử dụng từ khóa `virtual`
+Ví dụ: 
+```c
+class A {
+public:
+    void show() { 
+        cout << "Class A" << endl; 
+    }
+};
+
+// Kế thừa ảo từ A dùng từ khóa "virtual"
+class B : public virtual A { };
+class C : public virtual A { };
+
+// Class D kế thừa cả B và C
+class D : public B, public C { };
+
+int main() {
+    D d;
+    d.show(); // Kết quả: "Class A"
+    return 0;
+}
+```
+
+
+
 
 
 
