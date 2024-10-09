@@ -2736,6 +2736,11 @@ Trong ví dụ trên:
 - `Chim` kế thừa `private` từ `DongVat`, nên `an()` và `ngu()` đều trở thành `private`
 - `conChim` không thể gọi `an()` hoặc `ngu()` trực tiếp, nhưng có thể gọi `hanhDong()`, vì phương thức này là `public` trong `Chim` và có thể truy cập `an()` và `ngu()` bên trong
 
+## 3. Tính đa hình (polymorphism) 
+ Cho phép một đối tượng hoặc phương thức có thể biểu hiện theo nhiều cách khác nhau
+
+ Giúp tăng tính linh hoạt và khả năng mở rộng của chương trình, đồng thời cho phép các đối tượng của các lớp khác nhau xử lý chung qua cùng một giao diện
+
 </p>
 </details>
 
