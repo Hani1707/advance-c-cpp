@@ -2878,7 +2878,15 @@ Trong ví dụ trên:
 </details>
 
 # BÀI 15: VIRTUAL FUNCTION
+
+<details><summary>Chi tiết</summary>
+<p>
+
 ## 1. Đa hình tại thời điểm chạy (Run-time Polymorphism)
+
+<details><summary>Chi tiết</summary>
+<p>
+
 Đa hình tại thời điểm chạy xảy ra khi việc quyết định method nào (phiên bản của class cha hay của class con) sẽ được gọi ra ngay tại thời điểm chạy chương trình.
 
 Ưu điểm là giúp chương trình linh hoạt hơn, cho phép việc mở rộng chức năng mà không cần sửa đổi mã nguồn hiện tại.
@@ -3023,7 +3031,14 @@ int main() {
 - Trong hàm `main()`, sử dụng con trỏ kiểu `Animal*` để trỏ đến các đối tượng `Dog` và `Cat`
 - Khi gọi `sound()` trên các con trỏ `animal1` và `animal2`, phương thức `sound()` của `Dog` và `Cat` được gọi đúng với âm thanh đặc trưng của từng loại động vật
 
+</p>
+</details>
+
 ## 2. Đa kế thừa:
+
+<details><summary>Chi tiết</summary>
+<p>
+
 Cho phép một class kế thừa từ nhiều class khác
 
 Thường dùng để kết hợp các chức năng từ nhiều class
@@ -3112,7 +3127,11 @@ int main() {
 }
 ```
 
+</p>
+</details>
 
+</p>
+</details>
 
 
 
