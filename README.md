@@ -3134,9 +3134,21 @@ int main() {
 </details>
 
 # Bài 16: GENERIC PROGRAMMING-TEMPLATE
+
+
+<details><summary>Chi tiết</summary>
+<p>
+
  Template (mẫu) là một công cụ giúp bạn tạo ra các hàm và lớp có thể làm việc với nhiều kiểu dữ liệu khác nhau mà không cần viết lại mã cho từng kiểu cụ thể
 
+
+
 ## Các loại Template:
+
+<details><summary>Chi tiết</summary>
+<p>
+
+
 ### 1. Function Template (Hàm mẫu)
 Hàm mẫu cho phép bạn tạo ra một hàm tổng quát, có thể hoạt động với nhiều kiểu dữ liệu khác nhau
 
@@ -3167,15 +3179,179 @@ int main() {
 #### Từ khóa auto
 Từ khóa auto được sử dụng để tự động suy luận kiểu dữ liệu của biến hoặc kiểu trả về của hàm dựa trên giá trị mà gán cho nó
 
-Ở ví dụ trên Kiểu trả về của hàm sum ở ví dụ trên khá là thụ động vì kiểu trả về phụ thuộc vào typeA làm cho kết quả bị sai trong trường hợp này
+Ở ví dụ trên Kiểu trả về của hàm `multiply` ở ví dụ trên khá là thụ động vì kiểu trả về phụ thuộc vào `T1` làm cho kết quả bị sai trong trường hợp này
+```c
+cout << "Multiply: " << multiply(3, 5.7) << endl; //Kết quả là 17
+```
+Để giải quyết vấn đề này ta tử dụng từ khóa `auto`:
+```c
+template <typename T1, typename T2>
+auto multiply(T1 a, T2 b) {
+    return a * b; // Trả về tích của hai tham số, kiểu trả về sẽ được tự động suy diễn
+}
+// Kết quả trả về là 17.1
+```
+### 2. Class template
+Class template tương tự như function template, nhưng nó được áp dụng cho class
+
+Class template, giúp tạo ra một class có thể làm việc với nhiều kiểu dữ liệu khác nhau
+#### Sử dụng cho kiểu dữ liệu đơn giản
+Với trường hợp này là sử dụng template cho các kiểu dữ liệu đơn giản như int, float, double, char, ...
+
+Ví dụ:
+```c
+#include <iostream>
+using namespace std;
+
+// Định nghĩa class template với một kiểu dữ liệu tổng quát T
+template <typename T>
+class Container {
+private:
+    T value; // Biến thành viên của kiểu dữ liệu T
+public:
+    // Constructor để khởi tạo giá trị
+    Container(T val) : value(val) {}
+
+    // Phương thức để lấy giá trị
+    T getValue() const {
+        return value;
+    }
+
+    // Phương thức để thiết lập giá trị mới
+    void setValue(T val) {
+        value = val;
+    }
+
+    // Phương thức để hiển thị giá trị
+    void display() const {
+        cout << "Value: " << value << endl;
+    }
+};
+
+int main() {
+    // Tạo đối tượng Container với kiểu dữ liệu int
+    Container<int> intContainer(10);
+    intContainer.display();
+    intContainer.setValue(20);
+    cout << "New int value: " << intContainer.getValue() << endl;
+
+    // Tạo đối tượng Container với kiểu dữ liệu double
+    Container<double> doubleContainer(3.14);
+    doubleContainer.display();
+    doubleContainer.setValue(2.718);
+    cout << "New double value: " << doubleContainer.getValue() << endl;
+
+    // Tạo đối tượng Container với kiểu dữ liệu string
+    Container<string> stringContainer("Generic Programming");
+    stringContainer.display();
+    stringContainer.setValue("C++ Templates");
+    cout << "New string value: " << stringContainer.getValue() << endl;
+
+    return 0;
+}
+```
+
+Output:
+```
+Value: 10
+New int value: 20
+Value: 3.14
+New double value: 2.718
+Value: Generic Programming
+New string value: C++ Templates
+```
+**Khai báo Template**: `template <typename T>` khai báo một mẫu (`template`) cho lớp `Container`, với `T` là một kiểu dữ liệu tổng quát
+
+**Class Container**:
+- `value`: Một biến thành viên kiểu `T` để lưu trữ giá trị.
+- `Container(T val)`: Constructor nhận một giá trị `val` kiểu `T` và gán giá trị này cho `value`
+- `getValue()`: Trả về giá trị hiện tại của `value`
+- `setValue(T val)`: Thiết lập lại giá trị của `value` với `val`
+- `display()`: Hiển thị giá trị hiện tại của `value` trên màn hình
+
+**Sử dụng Lớp Template**:
+- `Container<int> intContainer(10)`;: Tạo một đối tượng `Container` kiểu `int` với giá trị khởi tạo là `10`
+- `Container<double> doubleContainer(3.14);`: Tạo một đối tượng `Container` kiểu `double` với giá trị khởi tạo là `3.14`
+- `Container<string> stringContainer("Generic Programming");`: Tạo một đối tượng `Container` kiểu `string` với giá trị khởi tạo là chuỗi `"Generic Programming"`
+#### Sử dụng cho kiểu dữ liệu phức tạp
+Với trường hợp này là sử dụng template cho các kiểu dữ liệu phức tạp như struct, class, ...
+
+Lưu ý: Từ khóa mới-const, phương thức có từ khóa này không thể thay đổi bất kỳ thành viên dữ liệu nào của đối tượng!
+
+Ví dụ:
+```c
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Lớp cơ sở
+class Shape {
+public:
+    virtual void draw() const = 0; // Phương thức thuần ảo
+};
+
+// Một lớp cụ thể kế thừa từ Shape
+class Circle : public Shape {
+public:
+    void draw() const override {
+        cout << "Drawing a circle" << endl;
+    }
+};
+
+// Một lớp khác kế thừa từ Shape
+class Square : public Shape {
+public:
+    void draw() const override {
+        cout << "Drawing a square" << endl;
+    }
+};
+
+// Khai báo class template với T là một kiểu class kế thừa từ Shape
+template <typename T>
+class ShapeContainer {
+private:
+    T shape;
+public:
+    ShapeContainer(T s) : shape(s) {}
+    
+    void displayShape() const {      // Từ khóa const
+        shape.draw();
+    }
+};
+
+int main() {
+    Circle c;
+
+    // Khởi tạo đối tượng kiểu class template
+    ShapeContainer<Circle> circleContainer(c);
+    circleContainer.displayShape();                  // Kết quả: Drawing a circle
+
+    Square s;
+
+    // Khởi tạo đối tượng kiểu class template
+    ShapeContainer squareContainer(s);              // Không cần truyền vào template argument <Square> cũng được!!
+    squareContainer.displayShape();                 // Kết quả: Drawing a square
+
+    return 0;
+}
+```
+
+</p>
+</details>
+
+## 3. Operator overloading
+
+<details><summary>Chi tiết</summary>
+<p>
 
 
+Nạp chồng toán tử là định nghĩa lại cách hoạt động của một số toán tử (toán tử có sẵn trong C++) đối với các object của class tự định nghĩa (các object đó không thể tính toán như các biến thông thường)
 
+</p>
+</details>
 
-
-
-
-
+</p>
+</details>
 
 
 
