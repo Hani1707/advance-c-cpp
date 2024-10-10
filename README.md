@@ -3133,6 +3133,43 @@ int main() {
 </p>
 </details>
 
+# Bài 16: GENERIC PROGRAMMING-TEMPLATE
+ Template (mẫu) là một công cụ giúp bạn tạo ra các hàm và lớp có thể làm việc với nhiều kiểu dữ liệu khác nhau mà không cần viết lại mã cho từng kiểu cụ thể
+
+## Các loại Template:
+### 1. Function Template (Hàm mẫu)
+Hàm mẫu cho phép bạn tạo ra một hàm tổng quát, có thể hoạt động với nhiều kiểu dữ liệu khác nhau
+
+Ví dụ:
+```c
+#include <iostream>
+using namespace std;
+
+// Định nghĩa template với hai kiểu dữ liệu tổng quát T1 và T2
+template <typename T1, typename T2>
+T1 multiply(T1 a, T2 b) {
+    return a * b; // Trả về tích của hai tham số với kiểu trả về là T1
+}
+
+int main() {
+    // Gọi hàm multiply với các kiểu dữ liệu khác nhau
+    cout << "Multiply: " << multiply(2, 3) << endl;        // Kiểu int
+    cout << "Multiply: " << multiply(2.5, 4.2) << endl;    // Kiểu double
+    cout << "Multiply: " << multiply(3, 5.7) << endl;      // Kết hợp int và double
+
+    return 0;
+}
+```
+- `template <typename T1, typename T2>`: Khai báo template với hai kiểu dữ liệu tổng quát `T1` và `T2`
+- `T1 multiply(T1 a, T2 b)`: Định nghĩa hàm `multiply` nhận hai tham số với kiểu dữ liệu `T1` và `T2`, và trả về kiểu `T1`.
+- Hàm `multiply` có thể được sử dụng với các kiểu dữ liệu khác nhau (như `int` và `double`).
+
+#### Từ khóa auto
+Từ khóa auto được sử dụng để tự động suy luận kiểu dữ liệu của biến hoặc kiểu trả về của hàm dựa trên giá trị mà gán cho nó
+
+Ở ví dụ trên Kiểu trả về của hàm sum ở ví dụ trên khá là thụ động vì kiểu trả về phụ thuộc vào typeA làm cho kết quả bị sai trong trường hợp này
+
+
 
 
 
