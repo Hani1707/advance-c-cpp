@@ -3353,8 +3353,130 @@ Nạp chồng toán tử là định nghĩa lại cách hoạt động của m�
 </p>
 </details>
 
-# Bài 17 NAMESPACE
 
 # Bài 17: NAMESPACE
+`namespace` là một tính năng được sử dụng để tổ chức và phân nhóm các tên (biến, hàm, lớp, v.v.) nhằm tránh xung đột tên khi chương trình phát triển lớn hoặc khi sử dụng các thư viện khác nhau có thể có các định danh trùng lặp
+```C
+#include <iostream>
 
-hoanghuunhan
+// Khai báo namespace đầu tiên với biến và hàm trùng tên
+namespace NamespaceA {
+    int value = 10;
+
+    void display() {
+        std::cout << "NamespaceA::value = " << value << std::endl;
+    }
+}
+
+// Khai báo namespace thứ hai với biến và hàm trùng tên
+namespace NamespaceB {
+    int value = 20;
+
+    void display() {
+        std::cout << "NamespaceB::value = " << value << std::endl;
+    }
+}
+
+int main() {
+    // Gọi hàm và biến từ NamespaceA
+    NamespaceA::display();  // Xuất ra: NamespaceA::value = 10
+
+    // Gọi hàm và biến từ NamespaceB
+    NamespaceB::display();  // Xuất ra: NamespaceB::value = 20
+
+    return 0;
+}
+```
+## Anonymous namespace (Namespace ẩn danh)
+`Anonymous namespace` là một `namespace` không có tên
+
+Sử dụng để giới hạn phạm vi của các hàm, biến, hoặc lớp trong một file cụ thể (tức là các file khác không thể sử dụng được dù có từ khóa `extern`)
+
+
+Nó tương đương vơi việc sử dụng từ khóa `static` khai báo toán cục
+
+Giúp tránh xung đột tên khi làm việc với các chương trình lớn hoặc nhiều file
+
+Ví dụ:
+```c
+namespace {
+    int hiddenVar = 42;  // Chỉ có thể truy cập trong file này
+}
+```
+## Sử dụng `using` để đơn giản hóa cú pháp:
+Thay vì mỗi lần đều phải viết `TênNamespace::`, bạn có thể sử dụng từ khóa `using` để đơn giản hóa:
+```c 
+using namespace MyNamespace;
+
+int main() {
+    std::cout << var << std::endl;  // Không cần MyNamespace:: nữa
+    myFunction();
+    return 0;
+}
+```
+*Lưu ý:* Khi sử dụng `using namespace`, nếu có nhiều namespace có tên thành phần trùng nhau, có thể gây ra lỗi xung đột tên
+## Nested namespace (namespace lồng nhau):
+Một namespace có thể được lồng bên trong một namespace khác:
+```c 
+namespace OuterNamespace {
+    namespace InnerNamespace {
+        void innerFunction() {
+            std::cout << "Hello from InnerNamespace!" << std::endl;
+        }
+    }
+}
+
+int main() {
+    OuterNamespace::InnerNamespace::innerFunction();
+    return 0;
+}
+```
+## Namespace mở rộng
+Là một khái niệm cho phép bạn thêm các thành phần mới vào một `namespace` đã tồn tại, bằng cách định nghĩa lại `namespace` đó trong một phần khác của chương trình
+
+Điều này rất hữu ích khi bạn cần tách biệt mã nguồn thành nhiều phần nhưng vẫn muốn các thành phần đó nằm trong cùng một `namespace`
+```c 
+#include <iostream>
+
+// Định nghĩa ban đầu của namespace MyNamespace
+namespace MyNamespace {
+    int value = 10;
+
+    void display() {
+        std::cout << "Value in MyNamespace: " << value << std::endl;
+    }
+}
+
+// Mở rộng namespace MyNamespace ở một phần khác của chương trình
+namespace MyNamespace {
+    void setValue(int newValue) {
+        value = newValue;
+    }
+}
+
+int main() {
+    // Gọi hàm trong MyNamespace để hiển thị giá trị ban đầu
+    MyNamespace::display();  // Xuất ra: Value in MyNamespace: 10
+
+    // Gọi hàm setValue để thay đổi giá trị
+    MyNamespace::setValue(25);
+
+    // Gọi lại hàm display để hiển thị giá trị mới
+    MyNamespace::display();  // Xuất ra: Value in MyNamespace: 25
+
+    return 0;
+}
+```
+## Namespace tiêu chuẩn (std) trong C++
+namespace `std` cung câp tất cả các thành phần của thư viện chuẩn C++ (như cout, cin, vector, string)
+```c 
+#include <iostream>
+using std::cout;
+using std::endl;
+
+int main() {
+    cout << "Hello, World!" << endl;
+    return 0;
+}
+```
+Một số thành phần nâng cao hơn sẽ được nói ở bài STL
