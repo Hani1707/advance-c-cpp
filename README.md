@@ -3355,6 +3355,10 @@ Nạp chồng toán tử là định nghĩa lại cách hoạt động của m�
 
 
 # Bài 17: NAMESPACE
+
+<details><summary>Chi tiết</summary>
+<p>
+
 `namespace` là một tính năng được sử dụng để tổ chức và phân nhóm các tên (biến, hàm, lớp, v.v.) nhằm tránh xung đột tên khi chương trình phát triển lớn hoặc khi sử dụng các thư viện khác nhau có thể có các định danh trùng lặp
 ```C
 #include <iostream>
@@ -3388,6 +3392,10 @@ int main() {
 }
 ```
 ## Anonymous namespace (Namespace ẩn danh)
+
+<details><summary>Chi tiết</summary>
+<p>
+
 `Anonymous namespace` là một `namespace` không có tên
 
 Sử dụng để giới hạn phạm vi của các hàm, biến, hoặc lớp trong một file cụ thể (tức là các file khác không thể sử dụng được dù có từ khóa `extern`)
@@ -3404,6 +3412,10 @@ namespace {
 }
 ```
 ## Sử dụng `using` để đơn giản hóa cú pháp:
+
+<details><summary>Chi tiết</summary>
+<p>
+
 Thay vì mỗi lần đều phải viết `TênNamespace::`, bạn có thể sử dụng từ khóa `using` để đơn giản hóa:
 ```c 
 using namespace MyNamespace;
@@ -3415,7 +3427,16 @@ int main() {
 }
 ```
 *Lưu ý:* Khi sử dụng `using namespace`, nếu có nhiều namespace có tên thành phần trùng nhau, có thể gây ra lỗi xung đột tên
+
+</p>
+</details>
+
+
 ## Nested namespace (namespace lồng nhau):
+
+<details><summary>Chi tiết</summary>
+<p>
+
 Một namespace có thể được lồng bên trong một namespace khác:
 ```c 
 namespace OuterNamespace {
@@ -3431,7 +3452,16 @@ int main() {
     return 0;
 }
 ```
+
+</p>
+</details>
+
+
 ## Namespace mở rộng
+
+<details><summary>Chi tiết</summary>
+<p>
+
 Là một khái niệm cho phép bạn thêm các thành phần mới vào một `namespace` đã tồn tại, bằng cách định nghĩa lại `namespace` đó trong một phần khác của chương trình
 
 Điều này rất hữu ích khi bạn cần tách biệt mã nguồn thành nhiều phần nhưng vẫn muốn các thành phần đó nằm trong cùng một `namespace`
@@ -3467,7 +3497,16 @@ int main() {
     return 0;
 }
 ```
+
+</p>
+</details>
+
+
 ## Namespace tiêu chuẩn (std) trong C++
+
+<details><summary>Chi tiết</summary>
+<p>
+
 namespace `std` cung câp tất cả các thành phần của thư viện chuẩn C++ (như cout, cin, vector, string)
 ```c 
 #include <iostream>
@@ -3480,3 +3519,9 @@ int main() {
 }
 ```
 Một số thành phần nâng cao hơn sẽ được nói ở bài STL
+
+</p>
+</details>
+
+</p>
+</details>
