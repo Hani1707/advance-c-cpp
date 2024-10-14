@@ -3391,6 +3391,8 @@ int main() {
     return 0;
 }
 ```
+
+
 ## Anonymous namespace (Namespace ẩn danh)
 
 <details><summary>Chi tiết</summary>
@@ -3411,6 +3413,9 @@ namespace {
     int hiddenVar = 42;  // Chỉ có thể truy cập trong file này
 }
 ```
+</p>
+</details>
+
 ## Sử dụng `using` để đơn giản hóa cú pháp:
 
 <details><summary>Chi tiết</summary>
