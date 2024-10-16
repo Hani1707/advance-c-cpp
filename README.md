@@ -3530,3 +3530,97 @@ Một số thành phần nâng cao hơn sẽ được nói ở bài STL
 
 </p>
 </details>
+
+# Bài 18: STANDARD TEMPLATE LIBRARY
+Standard Template Library ( STL) là một thư viện trong ngôn ngữ lập trình C++ cung cấp một tập hợp các template classes và functions để thực hiện nhiều loại cấu trúc dữ liệu và các thuật toán phổ biến
+
+# Các thành phần chính của STL:
+## 1. Container
+Container là cách gọi chung cho các cấu trúc dữ liệu tổng quát dùng để lưu trữ và quản lý các đối tượng (hoặc dữ liệu) theo một cách thức nhất định
+### Các container được học:
+#### Vector
+Là một mảng động, có khả năng thay đổi kích thước linh hoạt khi thêm hoặc xóa phần tử
+
+*Đặc điểm vector:*
+- **Mảng động:** Kích thước của `vector` có thể thay đổi tự động khi bạn thêm hoặc xóa phần tử. Khác với mảng tĩnh (array), bạn không cần xác định kích thước cố định trước
+- **Truy cập ngẫu nhiên:** `vector` hỗ trợ truy cập trực tiếp đến các phần tử thông qua chỉ số, với thời gian truy cập O(1), tương tự như mảng thông thường
+- **Thêm/xóa phần tử:** Thao tác thêm hoặc xóa phần tử ở cuối vector có thời gian O(1) trong trường hợp trung bình. Tuy nhiên, thêm phần tử ở giữa hoặc đầu sẽ có độ phức tạp O(n) do cần phải di chuyển các phần tử
+
+Ví dụ:
+```C
+#include <iostream>
+#include <vector>
+
+int main() {
+    // Khởi tạo một vector rỗng để lưu điểm số học sinh
+    std::vector<int> scores;
+
+    // Thêm điểm vào vector
+    scores.push_back(85);  // Thêm 85 vào cuối vector
+    scores.push_back(90);  // Thêm 90
+    scores.push_back(78);  // Thêm 78
+
+    // In ra các phần tử trong vector
+    std::cout << "Danh sách điểm số: ";
+    for (int i = 0; i < scores.size(); i++) {
+        std::cout << scores[i] << " ";
+    }
+    std::cout << std::endl;
+
+    // Truy cập và in ra điểm số đầu tiên và cuối cùng
+    std::cout << "Điểm số đầu tiên: " << scores.front() << std::endl;   // scores[0]
+    std::cout << "Điểm số cuối cùng: " << scores.back() << std::endl;   // scores[scores.size() - 1]
+
+    // Xóa phần tử cuối cùng
+    scores.pop_back();  // Xóa điểm 78
+    std::cout << "Sau khi xóa phần tử cuối: ";
+    for (int score : scores) {
+        std::cout << score << " ";
+    }
+    std::cout << std::endl;
+
+    // Chèn điểm 88 vào đầu vector
+    scores.insert(scores.begin(), 88);
+    std::cout << "Sau khi chèn 88 vào đầu: ";
+    for (int score : scores) {
+        std::cout << score << " ";
+    }
+    std::cout << std::endl;
+
+    // Xóa phần tử đầu tiên
+    scores.erase(scores.begin());
+    std::cout << "Sau khi xóa phần tử đầu: ";
+    for (int score : scores) {
+        std::cout << score << " ";
+    }
+    std::cout << std::endl;
+
+    // Kiểm tra kích thước và dung lượng của vector
+    std::cout << "Kích thước hiện tại của vector: " << scores.size() << std::endl;
+    std::cout << "Dung lượng hiện tại của vector: " << scores.capacity() << std::endl;
+
+    return 0;
+}
+```
+Kết quả:
+```C
+Danh sách điểm số: 85 90 78 
+Điểm số đầu tiên: 85
+Điểm số cuối cùng: 78
+Sau khi xóa phần tử cuối: 85 90 
+Sau khi chèn 88 vào đầu: 88 85 90 
+Sau khi xóa phần tử đầu: 85 90 
+Kích thước hiện tại của vector: 2
+Dung lượng hiện tại của vector: 4
+```
+   *Một số method của vector:*
+- `at()`: Truy cập vào phần tử của vector
+- `size()`: Trả về kích thước của vector
+- `resize()`: Thay đổi kích thước của vector
+- `begin()`: Địa chỉ của phần tử đầu tiên của vector
+- `end()`: Địa chỉ của phần tử cuối cùng của vector
+- `push_back()`: Thêm phần tử vào vị trí cuối của vector
+
+
+
+
