@@ -3532,10 +3532,13 @@ Một số thành phần nâng cao hơn sẽ được nói ở bài STL
 </details>
 
 # Bài 18: STANDARD TEMPLATE LIBRARY
-Standard Template Library ( STL) là một thư viện trong ngôn ngữ lập trình C++ cung cấp một tập hợp các template classes và functions để thực hiện nhiều loại cấu trúc dữ liệu và các thuật toán phổ biến
+
 
 <details><summary>Chi tiết</summary>
 <p>
+
+Standard Template Library ( STL) là một thư viện trong ngôn ngữ lập trình C++ cung cấp một tập hợp các template classes và functions để thực hiện nhiều loại cấu trúc dữ liệu và các thuật toán phổ biến
+
 
 
 # Các thành phần chính của STL:
