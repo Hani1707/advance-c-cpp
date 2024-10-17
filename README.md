@@ -3620,7 +3620,215 @@ Dung lượng hiện tại của vector: 4
 - `begin()`: Địa chỉ của phần tử đầu tiên của vector
 - `end()`: Địa chỉ của phần tử cuối cùng của vector
 - `push_back()`: Thêm phần tử vào vị trí cuối của vector
+#### List 
+Là một container trong STL của C++, được triển khai dưới dạng danh sách liên kết đôi. Một số đặc điểm quan trọng của list gồm:
+
+- **Truy cập tuần tự:** Các phần tử trong list chỉ có thể được truy cập theo thứ tự liên tiếp, không hỗ trợ truy cập ngẫu nhiên.
+- **Hiệu suất chèn và xoá:** Việc chèn và xoá phần tử tại bất kỳ vị trí nào trong list có hiệu suất tốt hơn so với vector, đặc biệt là khi thao tác ở giữa danh sách
+
+*Một số method của list:*
+- push_back():
+- pop_back():
+- insert(): Chèn một node vào list
+- erase(): Xóa một node của list
+- size(): Trả về kích thước của list
+
+Ví dụ:
+```c 
+#include <iostream>
+#include <list>
+
+int main() {
+    // Khai báo một list chứa các số nguyên
+    std::list<int> myList;
+
+    // Thêm phần tử vào cuối danh sách
+    myList.push_back(10);
+    myList.push_back(20);
+    myList.push_back(30);
+
+    // Thêm phần tử vào đầu danh sách
+    myList.push_front(5);
+
+    // Duyệt qua các phần tử trong danh sách và in ra
+    std::cout << "Danh sách ban đầu: ";
+    for (int value : myList) {
+        std::cout << value << " ";
+    }
+    std::cout << std::endl;
+
+    // Xóa phần tử đầu tiên và cuối cùng
+    myList.pop_front();
+    myList.pop_back();
+
+    // In lại danh sách sau khi xóa
+    std::cout << "Danh sách sau khi xóa phần tử đầu và cuối: ";
+    for (int value : myList) {
+        std::cout << value << " ";
+    }
+    std::cout << std::endl;
+
+    // Chèn phần tử tại một vị trí cụ thể
+    auto it = myList.begin();
+    std::advance(it, 1);  // Dịch iterator đến vị trí thứ 2
+    myList.insert(it, 15);
+
+    // In danh sách sau khi chèn phần tử
+    std::cout << "Danh sách sau khi chèn 15 vào vị trí thứ 2: ";
+    for (int value : myList) {
+        std::cout << value << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+```
+Kết quả:
+```c 
+Danh sách ban đầu: 5 10 20 30 
+Danh sách sau khi xóa phần tử đầu và cuối: 10 20 
+Danh sách sau khi chèn 15 vào vị trí thứ 2: 10 15 20 
+```
+#### Iterator
+Là một đối tượng được sử dụng để duyệt qua các phần tử trong một container như `std::vector`, `std::list`, `std::map`, v.v. 
+
+Cho phép truy cập tuần tự các phần tử trong một container mà không cần biết chi tiết về cách các phần tử đó được lưu trữ. 
+
+Iterator hoạt động giống như một con trỏ, nhưng cung cấp nhiều tính năng linh hoạt và an toàn hơn
+
+**Cách hoạt động:**
+- Iterator cung cấp các phép toán như tăng (`++`), giảm (`--`), truy cập giá trị (`*`), và so sánh (`!=`, `==`) để duyệt và thao tác với các phần tử trong container.
+- Với `std::list`, iterator được sử dụng để duyệt qua danh sách liên kết đôi
 
 
+Ví dụ về cách sử dụng iterator với `std::list`
+```c 
+#include <iostream>
+#include <list>
 
+int main() {
+    std::list<int> myList = {10, 20, 30, 40, 50};
+
+    // Khai báo một iterator cho list
+    std::list<int>::iterator it;
+
+    // Duyệt qua các phần tử trong list bằng iterator
+    std::cout << "Các phần tử trong danh sách: ";
+    for (it = myList.begin(); it != myList.end(); ++it) {
+        std::cout << *it << " ";  // Sử dụng toán tử * để lấy giá trị phần tử mà iterator đang trỏ tới
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+```
+
+Ví dụ về cách chèn và xoá phần tử trong `std::list` bằng iterator:
+```c 
+#include <iostream>
+#include <list>
+
+int main() {
+    std::list<int> myList = {10, 20, 30, 40, 50};
+
+    // Khai báo iterator
+    std::list<int>::iterator it = myList.begin();
+
+    // Dịch iterator đến vị trí thứ 2
+    std::advance(it, 2);
+
+    // Chèn giá trị 25 vào vị trí thứ 2
+    myList.insert(it, 25);
+
+    // In ra danh sách sau khi chèn
+    std::cout << "Danh sách sau khi chèn 25: ";
+    for (it = myList.begin(); it != myList.end(); ++it) {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+
+    // Xóa phần tử thứ 2
+    it = myList.begin();
+    std::advance(it, 2);
+    myList.erase(it);
+
+    // In ra danh sách sau khi xoá
+    std::cout << "Danh sách sau khi xoá phần tử thứ 2: ";
+    for (it = myList.begin(); it != myList.end(); ++it) {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+```
+Kết quả:
+```c 
+Danh sách sau khi chèn 25: 10 20 25 30 40 50 
+Danh sách sau khi xoá phần tử thứ 2: 10 20 30 40 50 
+```
+#### Map 
+Là một container trong STL của C++, cung cấp cấu trúc dữ liệu ánh xạ giữa các cặp key-value.
+- Map lưu trữ các phần tử dưới dạng cặp key-value, trong đó mỗi key phải là duy nhất.
+- Bạn có thể thêm phần tử mới vào map bằng cách sử dụng operator [] hoặc hàm insert(). Để xóa phần tử, bạn có thể sử dụng hàm erase().
+- Ta có thể sử dụng iterator để duyệt qua các phần tử trong map
+
+Ví dụ:
+```c 
+#include <iostream>
+#include <map>
+
+int main() {
+    // Khai báo một map với key là kiểu int và value là kiểu string
+    std::map<int, std::string> myMap;
+
+    // Thêm phần tử vào map bằng operator []
+    myMap[1] = "Apple";
+    myMap[2] = "Banana";
+    myMap[3] = "Cherry";
+
+    // Thêm phần tử vào map bằng hàm insert()
+    myMap.insert(std::make_pair(4, "Grapes"));
+
+    // Duyệt qua map và in ra các phần tử
+    std::cout << "Danh sách các phần tử trong map:" << std::endl;
+    for (const auto& pair : myMap) {
+        std::cout << "Key: " << pair.first << ", Value: " << pair.second << std::endl;
+    }
+
+    // Tìm kiếm phần tử với key là 2
+    auto it = myMap.find(2);
+    if (it != myMap.end()) {
+        std::cout << "Tìm thấy Key 2 với giá trị: " << it->second << std::endl;
+    } else {
+        std::cout << "Không tìm thấy Key 2" << std::endl;
+    }
+
+    // Xóa phần tử với key là 3
+    myMap.erase(3);
+
+    // In lại map sau khi xóa
+    std::cout << "Map sau khi xóa phần tử có Key 3:" << std::endl;
+    for (const auto& pair : myMap) {
+        std::cout << "Key: " << pair.first << ", Value: " << pair.second << std::endl;
+    }
+
+    return 0;
+}
+```
+Kết quả:
+```C
+Danh sách các phần tử trong map:
+Key: 1, Value: Apple
+Key: 2, Value: Banana
+Key: 3, Value: Cherry
+Key: 4, Value: Grapes
+Tìm thấy Key 2 với giá trị: Banana
+Map sau khi xóa phần tử có Key 3:
+Key: 1, Value: Apple
+Key: 2, Value: Banana
+Key: 4, Value: Grapes
+```
+Ví dụ với `struct`:
+```c 
 
