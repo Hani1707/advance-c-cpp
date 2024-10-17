@@ -3831,4 +3831,39 @@ Key: 4, Value: Grapes
 ```
 Ví dụ với `struct`:
 ```c 
+#include <iostream>
+#include <map>
+#include <string>
+
+struct SinhVien {
+    std::string ten;
+    std::string lop;
+    int id;
+};
+
+int main(int argc, char const *argv[]) {
+    // Khai báo map với key là kiểu int và value là struct SinhVien
+    std::map<int, SinhVien> arr = {
+        {0, {"Trung", "HTN", 100}},
+        {1, {"Tuan", "HTN", 101}},
+        {2, {"Anh", "HTN", 102}}
+    };
+
+    // Duyệt qua các phần tử trong map và in ra
+    for (const auto& index : arr) {
+        std::cout << "key: " << index.first
+                  << ", ten: " << index.second.ten
+                  << ", lop: " << index.second.lop
+                  << ", ID: " << index.second.id << std::endl;
+    }
+
+    return 0;
+}
+```
+Kết quả:
+```c
+key: 0, ten: Trung, lop: HTN, ID: 100
+key: 1, ten: Tuan, lop: HTN, ID: 101
+key: 2, ten: Anh, lop: HTN, ID: 102
+```
 
