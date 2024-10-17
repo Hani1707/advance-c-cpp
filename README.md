@@ -3534,7 +3534,16 @@ Một số thành phần nâng cao hơn sẽ được nói ở bài STL
 # Bài 18: STANDARD TEMPLATE LIBRARY
 Standard Template Library ( STL) là một thư viện trong ngôn ngữ lập trình C++ cung cấp một tập hợp các template classes và functions để thực hiện nhiều loại cấu trúc dữ liệu và các thuật toán phổ biến
 
+<details><summary>Chi tiết</summary>
+<p>
+
+
 # Các thành phần chính của STL:
+
+<details><summary>Chi tiết</summary>
+<p>
+
+
 ## 1. Container
 Container là cách gọi chung cho các cấu trúc dữ liệu tổng quát dùng để lưu trữ và quản lý các đối tượng (hoặc dữ liệu) theo một cách thức nhất định
 ### Các container được học:
@@ -3866,4 +3875,8 @@ key: 0, ten: Trung, lop: HTN, ID: 100
 key: 1, ten: Tuan, lop: HTN, ID: 101
 key: 2, ten: Anh, lop: HTN, ID: 102
 ```
+</p>
+</details>
 
+</p>
+</details>
