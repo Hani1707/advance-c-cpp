@@ -3926,3 +3926,244 @@ key: 2, ten: Anh, lop: HTN, ID: 102
 </p>
 </details>
 
+# Bài 19: Design Patterns
+Là các giải pháp có thể tái sử dụng cho những vấn đề thường gặp trong thiết kế phần mềm. Chúng cung cấp một cách tiếp cận có cấu trúc để giải quyết các vấn đề phát sinh trong quá trình phát triển phần mềm
+
+## Các loại Design Patterns
+### Creational Patterns (Mẫu khởi tạo): 
+Quản lý việc khởi tạo đối tượng 
+**Singleton**:
+
+Mục đích chính của Singleton là kiểm soát việc tạo đối tượng, đảm bảo rằng chỉ có duy nhất một thể hiện (instance) của lớp và cung cấp một cách để truy cập đối tượng đó từ bất kỳ đâu trong chương trình
+
+Đặc điểm chính:
+- **Chỉ có một thể hiện duy nhất**: Lớp Singleton đảm bảo rằng chỉ có duy nhất một đối tượng của lớp được tạo ra.
+- **Quyền truy cập toàn cục**: Đối tượng Singleton được cung cấp thông qua một phương thức tĩnh, giúp bạn có thể truy cập từ bất kỳ đâu trong chương trình.
+- **Tạo đối tượng khi cần thiết (Lazy Initialization)**: Đối tượng Singleton thường được tạo ra khi nó được yêu cầu lần đầu tiên, giúp tiết kiệm tài nguyên
+
+```c++
+#include <iostream>
+using namespace std;
+
+class Sensor {
+private:
+    // Biến tĩnh để lưu trữ đối tượng duy nhất
+    static Sensor* instance;
+
+    // Hàm khởi tạo private để ngăn tạo thêm đối tượng
+    Sensor() {
+        cout << "Cảm biến đã được khởi tạo." << endl;
+    }
+
+public:
+    // Phương thức tĩnh để lấy đối tượng duy nhất
+    static Sensor* getInstance() {
+        if (instance == nullptr) {
+            instance = new Sensor();
+        }
+        return instance;
+    }
+
+    void readData() {
+        cout << "Đọc dữ liệu từ cảm biến..." << endl;
+    }
+};
+
+// Khởi tạo biến tĩnh ban đầu là nullptr
+Sensor* Sensor::instance = nullptr;
+
+int main() {
+    // Gọi phương thức tĩnh để lấy đối tượng Singleton
+    Sensor* sensor1 = Sensor::getInstance();
+    sensor1->readData();
+
+    // Gọi lại sẽ vẫn lấy cùng một đối tượng
+    Sensor* sensor2 = Sensor::getInstance();
+    sensor2->readData();
+
+    return 0;
+}
+```
+**Factory Pattern**:
+
+Đặc điểm:
+
+- **Tính trừu tượng:** Factory Pattern giúp ẩn đi quá trình tạo ra đối tượng, người dùng chỉ cần biết cách sử dụng đối tượng mà không cần quan tâm đến việc khởi tạo chúng.
+
+- **Khả năng mở rộng:** Mẫu thiết kế này cho phép dễ dàng thêm các lớp đối tượng mới mà không ảnh hưởng đến mã nguồn đã có, giúp mở rộng hệ thống mà không gây gián đoạn.
+
+- **Tính linh hoạt:** Khi cần thay đổi hoặc thêm các loại đối tượng mới, bạn chỉ cần điều chỉnh hoặc bổ sung trong Factory mà không cần sửa đổi các phần khác của hệ thống.
+
+- **Giảm sự phụ thuộc:** Factory Pattern giảm thiểu sự phụ thuộc của mã nguồn vào các lớp cụ thể, từ đó giúp hệ thống dễ bảo trì và tăng khả năng tái sử dụng
+```c++
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Lớp cơ sở Sensor (Cảm biến)
+class Sensor {
+public:
+    virtual void readData() = 0;  // Phương thức ảo thuần túy để các lớp con phải thực hiện
+    virtual ~Sensor() {}  // Đảm bảo có hàm hủy ảo để giải phóng tài nguyên
+};
+
+// Lớp cụ thể TemperatureSensor (Cảm biến nhiệt độ)
+class TemperatureSensor : public Sensor {
+public:
+    void readData() override {
+        cout << "Đọc dữ liệu từ cảm biến nhiệt độ..." << endl;
+    }
+};
+
+// Lớp cụ thể HumiditySensor (Cảm biến độ ẩm)
+class HumiditySensor : public Sensor {
+public:
+    void readData() override {
+        cout << "Đọc dữ liệu từ cảm biến độ ẩm..." << endl;
+    }
+};
+
+// Lớp Factory để tạo các đối tượng cảm biến
+class SensorFactory {
+public:
+    // Phương thức tạo cảm biến dựa trên loại cảm biến
+    static Sensor* createSensor(const string& type) {
+        if (type == "Temperature") {
+            return new TemperatureSensor();
+        } else if (type == "Humidity") {
+            return new HumiditySensor();
+        } else {
+            cout << "Loại cảm biến không hợp lệ!" << endl;
+            return nullptr;
+        }
+    }
+};
+
+int main() {
+    // Sử dụng Factory để tạo cảm biến nhiệt độ
+    Sensor* tempSensor = SensorFactory::createSensor("Temperature");
+    if (tempSensor != nullptr) {
+        tempSensor->readData();  // Kết quả: Đọc dữ liệu từ cảm biến nhiệt độ...
+    }
+
+    // Sử dụng Factory để tạo cảm biến độ ẩm
+    Sensor* humiditySensor = SensorFactory::createSensor("Humidity");
+    if (humiditySensor != nullptr) {
+        humiditySensor->readData();  // Kết quả: Đọc dữ liệu từ cảm biến độ ẩm...
+    }
+
+    // Giải phóng bộ nhớ
+    delete tempSensor;
+    delete humiditySensor;
+
+    return 0;
+}
+
+```
+
+**Singleton factory:**
+
+Cách hoạt động:
+- Singleton đảm bảo chỉ có một thể hiện của lớp Factory.
+- Factory cung cấp phương thức để tạo ra các đối tượng, nhưng các đối tượng này được tạo ra thông qua một điểm truy cập duy nhất là thể hiện của Singleton Factory
+```c++
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+// Lớp cơ sở Sensor
+class Sensor {
+public:
+    virtual void readData() = 0;
+};
+
+// Lớp kế thừa cụ thể - Sensor Nhiệt độ
+class TemperatureSensor : public Sensor {
+public:
+    void readData() override {
+        cout << "Đọc dữ liệu từ cảm biến nhiệt độ..." << endl;
+    }
+};
+
+// Lớp kế thừa cụ thể - Sensor Ánh sáng
+class LightSensor : public Sensor {
+public:
+    void readData() override {
+        cout << "Đọc dữ liệu từ cảm biến ánh sáng..." << endl;
+    }
+};
+
+// Lớp Singleton Factory để tạo cảm biến
+class SensorFactory {
+private:
+    // Biến tĩnh để lưu trữ đối tượng duy nhất
+    static SensorFactory* instance;
+
+    // Hàm khởi tạo private để ngăn tạo thêm đối tượng
+    SensorFactory() {
+        cout << "SensorFactory đã được khởi tạo." << endl;
+    }
+
+public:
+    // Phương thức tĩnh để lấy đối tượng duy nhất của SensorFactory
+    static SensorFactory* getInstance() {
+        if (instance == nullptr) {
+            instance = new SensorFactory();
+        }
+        return instance;
+    }
+
+    // Phương thức Factory để tạo cảm biến
+    Sensor* createSensor(const string& type) {
+        if (type == "Temperature") {
+            return new TemperatureSensor();
+        } else if (type == "Light") {
+            return new LightSensor();
+        } else {
+            cout << "Loại cảm biến không hợp lệ." << endl;
+            return nullptr;
+        }
+    }
+};
+
+// Khởi tạo biến tĩnh ban đầu là nullptr
+SensorFactory* SensorFactory::instance = nullptr;
+
+int main() {
+    // Lấy đối tượng Singleton của SensorFactory
+    SensorFactory* factory = SensorFactory::getInstance();
+
+    // Sử dụng SensorFactory để tạo các cảm biến
+    Sensor* tempSensor = factory->createSensor("Temperature");
+    if (tempSensor != nullptr) {
+        tempSensor->readData();
+    }
+
+    Sensor* lightSensor = factory->createSensor("Light");
+    if (lightSensor != nullptr) {
+        lightSensor->readData();
+    }
+
+    // Hủy các đối tượng cảm biến đã tạo ra
+    delete tempSensor;
+    delete lightSensor;
+
+    return 0;
+}
+```
+
+
+## Structural Patterns (Mẫu cấu trúc): 
+Tổ chức cấu trúc của các lớp và đối tượng 
+### Decorator Pattern:
+**Đặc điểm:**
+- **Tính linh hoạt:** Decorator Pattern cho phép thêm hành vi mới cho đối tượng một cách linh hoạt mà không cần thay đổi các đối tượng khác trong hệ thống.
+
+- **Tính mở rộng:** Cho phép mở rộng tính năng mà không làm thay đổi mã nguồn gốc, giúp chương trình dễ mở rộng và bảo trì.
+
+- **Dễ bảo trì:** Bạn có thể dễ dàng thêm hoặc thay thế các tính năng thông qua các lớp decorator mà không làm ảnh hưởng đến cấu trúc lớp hiện có.
+
+- **Giảm sự phức tạp của kế thừa:** Thay vì tạo ra nhiều lớp con để mở rộng chức năng, bạn có thể sử dụng Decorator Pattern để xếp chồng các decorator, giảm bớt sự phức tạp trong cấu trúc kế thừa.
+
+```c++
