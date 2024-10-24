@@ -2767,7 +2767,7 @@ Trong ví dụ trên:
 - Được xác định trong quá trình biên dịch
 - Có thể đạt được thông qua nạp chồng hàm (function overloading) và nạp chồng toán tử (operator overloading)
 
-Nạp chồng hàm (Function Overloading): 
+**Nạp chồng hàm (Function Overloading):**
 
 Cho phép nhiều hàm có cùng tên nhưng khác nhau về kiểu tham số hoặc số lượng tham số. 
 
@@ -2811,8 +2811,50 @@ Cong 3 so nguyen: 12
 Cong 2 so thuc: 8
 ```
 
-Nạp chồng toán tử (Operator Overloading):
+**Nạp chồng toán tử (Operator Overloading):**
+Là bạn định nghĩa lại toán tử đã có trên kiểu dữ liệu người dùng tự định nghĩa để dể dàng thể hiện các câu lệnh trong chương trình
 
+Ví dụ:
+```C
+#include <iostream>
+using namespace std;
+
+class Diem {
+    private:
+        int x, y;
+    public:
+        // Hàm khởi tạo
+        Diem(int a = 0, int b = 0) : x(a), y(b) {}
+
+        // Nạp chồng toán tử ==
+        bool operator == (const Diem& khac) {
+            return (this->x == khac.x && this->y == khac.y);
+        }
+
+        // Phương thức hiển thị tọa độ
+        void hienThi() {
+            cout << "(" << x << ", " << y << ")" << endl;
+        }
+};
+
+int main() {
+    Diem d1(3, 4), d2(3, 4), d3(1, 2);
+
+    if (d1 == d2) {
+        cout << "d1 và d2 có tọa độ giống nhau." << endl;
+    } else {
+        cout << "d1 và d2 có tọa độ khác nhau." << endl;
+    }
+
+    if (d1 == d3) {
+        cout << "d1 và d3 có tọa độ giống nhau." << endl;
+    } else {
+        cout << "d1 và d3 có tọa độ khác nhau." << endl;
+    }
+
+    return 0;
+}
+```
 
 #### 2. Đa hình động (Runtime polymorphism)
 
@@ -2824,7 +2866,7 @@ Lớp chứa ít nhất một hàm thuần ảo (pure virtual function)
 Cú pháp `virtual void ham() = 0;`
 
 Lớp trừu tượng không thể tạo đối tượng trực tiếp mà chỉ có thể làm lớp cơ sở cho các lớp dẫn xuất
-```c
+```c++
 #include <iostream>
 using namespace std;
 
@@ -3883,3 +3925,4 @@ key: 2, ten: Anh, lop: HTN, ID: 102
 
 </p>
 </details>
+
