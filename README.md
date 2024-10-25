@@ -3927,9 +3927,18 @@ key: 2, ten: Anh, lop: HTN, ID: 102
 </details>
 
 # Bài 19: Design Patterns
+
+<details><summary>Chi tiết</summary>
+<p>
+
+
 Là các giải pháp có thể tái sử dụng cho những vấn đề thường gặp trong thiết kế phần mềm. Chúng cung cấp một cách tiếp cận có cấu trúc để giải quyết các vấn đề phát sinh trong quá trình phát triển phần mềm
 
 ## Các loại Design Patterns
+
+<details><summary>Chi tiết</summary>
+<p>
+
 ### Creational Patterns (Mẫu khởi tạo): 
 Quản lý việc khởi tạo đối tượng 
 **Singleton**:
@@ -4167,3 +4176,453 @@ Tổ chức cấu trúc của các lớp và đối tượng
 - **Giảm sự phức tạp của kế thừa:** Thay vì tạo ra nhiều lớp con để mở rộng chức năng, bạn có thể sử dụng Decorator Pattern để xếp chồng các decorator, giảm bớt sự phức tạp trong cấu trúc kế thừa.
 
 ```c++
+#include <iostream>
+
+using namespace std;
+
+class Sensor{
+    public:
+        virtual void readData() = 0;
+};
+
+// Cảm biến nhiệt độ
+class TemperatureSensor : public Sensor{
+    public:
+        void readData() override {
+            cout<<"reading temperature data: "<<endl;
+        }
+};
+
+// Cảm biến độ ẩm
+class HumiditySensor : public Sensor{
+    public:
+        void readData() override {
+            cout<<"reading humidity data: "<<endl;
+        }
+};
+
+// Decorator Pattern
+class SensorDecorator : public Sensor{
+    protected:
+        Sensor* wrappedSensor;
+
+    public:
+        SensorDecorator(Sensor* sensor) : wrappedSensor(sensor){}
+
+        virtual void readData() override {
+            wrappedSensor->readData();
+        }
+};
+
+// Thêm tính năng Log
+class LoggingSensor : public SensorDecorator{
+    public:
+        LoggingSensor(Sensor* sensor) : SensorDecorator(sensor){}
+
+        void readData() override{
+            cout<<"LOG: sensor data"<<endl;
+            SensorDecorator::readData();
+        }
+};
+
+
+int main(int argc, char const *argv[])
+{
+    Sensor* tempSensor = new TemperatureSensor();
+    Sensor* log = new LoggingSensor(tempSensor);
+    log->readData();
+    return 0;
+}
+```
+## Behavioral Patterns (Mẫu hành vi): 
+Xác định cách các đối tượng tương tác với nhau :
+### Observer:
+Là mẫu thiết kế thuộc nhóm Behavioral (hành vi)
+
+Trong mẫu này, một đối tượng được gọi là Subject sẽ gửi thông báo cho một hoặc nhiều Observer (người quan sát) khi có sự thay đổi trong trạng thái của nó
+
+Các Observer sau đó sẽ tự động nhận được thông báo và có thể cập nhật hoặc thực hiện hành động phù hợp
+
+#### Đặc điểm:
+1. **Mối quan hệ giữa Subject và Observer:**
+- Subject duy trì một danh sách các Observer. Các Observer có thể đăng ký để nhận thông báo từ Subject khi có sự thay đổi trạng thái. Observer cũng có thể thêm, xóa hoặc cập nhật từ danh sách này
+2. **Tự động thông báo (Push Notification):**
+- Khi trạng thái của Subject thay đổi, nó sẽ tự động gửi thông báo cho tất cả các Observer đã đăng ký. Các Observer không cần phải chủ động kiểm tra trạng thái của Subject mà sẽ nhận thông báo ngay khi có sự thay đổi
+3. **Tính linh hoạt và dễ mở rộng:**
+- Observer Pattern cho phép thêm hoặc xóa các Observer một cách linh hoạt mà không cần thay đổi nội dung bên trong của Subject. Các Observer có thể dễ dàng dừng việc nhận thông báo từ Subject bằng cách hủy đăng ký, giúp quản lý tài nguyên và sự kiện trong hệ thống hiệu quả hơn.
+4. **Giảm sự phụ thuộc lẫn nhau:**
+- Subject không cần biết chi tiết cụ thể về các Observer mà nó quản lý, chỉ cần biết rằng chúng thực hiện theo một giao diện chung để nhận thông báo. Điều này giúp giảm sự kết nối chặt chẽ giữa các đối tượng và giúp mã nguồn dễ bảo trì hơn
+5. **Một hoặc nhiều Observer có thể theo dõi một hoặc nhiều Subject:**
+- Nhiều Observer có thể cùng giám sát một Subject. Điều này cho phép một sự kiện trong Subject có thể được phản ánh và tác động đến nhiều đối tượng khác nhau.
+
+- Đồng thời, một Observer cũng có thể đăng ký nhận thông báo từ nhiều Subject khác nhau. Mỗi khi một Subject có sự thay đổi, nó sẽ gửi thông báo cho Observer để cập nhật.
+```c++
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+
+// Interface for observers (display, logger, etc.)
+class Observer {
+public:
+    virtual void update(float temperature, float humidity, float light) = 0;
+};
+
+// Subject (SensorManager) holds the state and notifies observers
+class SensorManager {
+    float temperature;
+    float humidity;
+    float light;
+    std::vector<Observer*> observers;
+public:
+    void registerObserver(Observer* observer) {
+        observers.push_back(observer);
+    }
+
+    void removeObserver(Observer* observer) {
+        observers.erase(std::remove(observers.begin(), observers.end(), observer), observers.end());
+    }
+
+    void notifyObservers() {
+        for (auto observer : observers) {
+            observer->update(temperature, humidity, light);
+        }
+    }
+
+    void setMeasurements(float temp, float hum, float lightLvl) {
+        temperature = temp;
+        humidity = hum;
+        light = lightLvl;
+        notifyObservers();
+    }
+};
+
+// Display component (an observer)
+class Display : public Observer {
+public:
+    void update(float temperature, float humidity, float light) override {
+        std::cout << "Display: Temperature: " << temperature
+                  << ", Humidity: " << humidity
+                  << ", Light: " << light << std::endl;
+    }
+};
+
+// Logger component (an observer)
+class Logger : public Observer {
+public:
+    void update(float temperature, float humidity, float light) override {
+        std::cout << "Logging data... Temp: " << temperature
+                  << ", Humidity: " << humidity
+                  << ", Light: " << light << std::endl;
+    }
+};
+
+int main() {
+    SensorManager sensorManager;
+
+    Display display;
+    Logger logger;
+
+    sensorManager.registerObserver(&display);
+    sensorManager.registerObserver(&logger);
+
+    sensorManager.setMeasurements(25.0, 60.0, 700.0); // Simulate sensor data update
+    sensorManager.setMeasurements(26.0, 65.0, 800.0); // Another sensor update
+
+    return 0;
+}
+```
+### MVP(Model - View - Presenter):
+ Là một mẫu thiết kế thuộc nhóm Behavioral, phổ biến trong lập trình giao diện người dùng (UI) và phát triển ứng dụng. MVP tách biệt các thành phần của ứng dụng thành ba phần chính: Model, View, và Presenter. Cấu trúc này giúp dễ dàng quản lý, kiểm thử, và bảo trì mã nguồn
+
+ - Model: Chứa logic liên quan đến dữ liệu của ứng dụng, bao gồm các đối tượng, cơ sở dữ liệu, và giao tiếp với các API khác.
+
+- View: Hiển thị giao diện (Interface) và nhận tương tác từ người dùng (như nhập liệu, bấm nút).
+
+- Presenter: Là cầu nối giữa Model và View, chịu trách nhiệm xử lý logic, điều phối dữ liệu từ Model đến View và ngược lại.
+
+Đặc điểm:
+- Phân tách logic và giao diện: Presenter chịu trách nhiệm xử lý logic ứng dụng, giúp View tập trung vào nhiệm vụ hiển thị.
+- Presenter không phụ thuộc vào giao diện cụ thể: Presenter giao tiếp với View thông qua interface, giúp việc kiểm thử và thay đổi giao diện trở nên linh hoạt hơn.
+- Thích hợp cho các ứng dụng có giao diện phức tạp: MVP phù hợp cho các ứng dụng với nhiều dữ liệu và thành phần giao diện phức tạp, đảm bảo cấu trúc dễ quản lý
+
+```C++
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class SinhVienModel
+{
+private:
+    string name;
+    int age;
+    string studentId;
+
+public:
+    SinhVienModel(const string &name, int age, const string &studentId) : name(name), age(age), studentId(studentId) {}
+
+    // setter method
+    void setName(const string &newName)
+    {
+        name = newName;
+    }
+
+    void setAge(int newAge)
+    {
+        age = newAge;
+    }
+
+    void setStudentId(const string &newStudentId)
+    {
+        studentId = newStudentId;
+    }
+
+    // getter method
+    string getName() const
+    {
+        return name;
+    }
+
+    int getAge() const
+    {
+        return age;
+    }
+
+    string getStudentId() const
+    {
+        return studentId;
+    }
+};
+
+class SinhVienView
+{
+public:
+    void displayStudentInfo(const string &name, int age, const string &studentId)
+    {
+        cout << "Thông tin sinh viên:" << endl;
+        cout << "Tên: " << name << endl;
+        cout << "Tuổi: " << age << endl;
+        cout << "Mã số sinh viên: " << studentId << endl;
+    }
+
+    void inputStudentInfo(string &name, int &age, string &studentId)
+    {
+        cout << "Nhập thông tin sinh viên:" << endl;
+
+        cout << "Tên: ";
+        getline(cin, name);
+
+        cout << "Tuổi: ";
+        cin >> age;
+        cin.ignore(); // Bỏ qua ký tự newline trong buffer
+
+        cout << "Mã số sinh viên: ";
+        getline(cin, studentId);
+    }
+};
+
+class SinhVienPresenter
+{
+private:
+    SinhVienModel &model;
+    SinhVienView &view;
+
+public:
+    SinhVienPresenter(SinhVienModel &m, SinhVienView &v) : model(m), view(v) {}
+
+    void updateStudentInfo()
+    {
+        string name;
+        int age;
+        string studentId;
+
+        view.inputStudentInfo(name, age, studentId);
+        model.setName(name);
+        model.setAge(age);
+        model.setStudentId(studentId);
+    }
+
+    void showStudentInfo()
+    {
+        view.displayStudentInfo(model.getName(), model.getAge(), model.getStudentId());
+    }
+};
+
+int main()
+{
+    // Tạo model, view và presenter
+    SinhVienModel model("Tuấn", 20, "HTN123");
+    SinhVienView view;
+    SinhVienPresenter presenter(model, view);
+
+    int choice;
+    do
+    {
+        cout << "\n1. Hiển thị thông tin sinh viên" << std::endl;
+        cout << "2. Cập nhật thông tin sinh viên" << std::endl;
+        cout << "3. Thoát" << std::endl;
+        cout << "Nhập lựa chọn: ";
+        cin >> choice;
+        cin.ignore(); // Bỏ qua ký tự newline trong buffer
+
+        switch (choice)
+        {
+        case 1:
+            presenter.showStudentInfo();
+            break;
+
+        case 2:
+            presenter.updateStudentInfo();
+            break;
+
+        case 3:
+            cout << "Thoát chương trình." << endl;
+            break;
+
+        default:
+            cout << "Lựa chọn không hợp lệ!" << endl;
+        }
+
+    } while (choice != 3);
+
+    return 0;
+}
+```
+```c++
+#include <iostream>
+
+using namespace std;
+
+class ClimateControlModel
+{
+private:
+    int temperature; // Nhiệt độ hiện tại trong xe
+    bool isAirOn;    // Trạng thái của điều hòa (bật/tắt)
+
+public:
+    ClimateControlModel(int temp = 24, bool air = true) : temperature(temp), isAirOn(air) {}
+
+    int getTemperature() const
+    {
+        return temperature;
+    }
+
+    bool getAirStatus() const
+    {
+        return isAirOn;
+    }
+
+    void setTemperature(int newTemperature)
+    {
+        temperature = newTemperature;
+    }
+
+    void setAirStatus(bool status)
+    {
+        isAirOn = status;
+    }
+};
+
+class ClimateControlView
+{
+public:
+    void displayCurrentSettings(int temperature, bool isAirOn)
+    {
+        cout << "---- Thông tin điều hòa xe hơi ----" << endl;
+        cout << "Nhiệt độ hiện tại: " << temperature << "°C" << endl;
+        cout << "Trạng thái điều hòa: " << (isAirOn ? "Bật" : "Tắt") << endl;
+    }
+
+    int getUserTemperatureInput()
+    {
+        int temp;
+        cout << "Nhập nhiệt độ mong muốn: ";
+        cin >> temp;
+        return temp;
+    }
+
+    bool getUserAirStatusInput()
+    {
+        int choice;
+        cout << "Bật/Tắt điều hòa (1: Bật, 0: Tắt): ";
+        cin >> choice;
+        return (choice == 1);
+    }
+};
+
+class ClimateControlPresenter
+{
+private:
+    ClimateControlModel &model;
+    ClimateControlView &view;
+
+public:
+    ClimateControlPresenter(ClimateControlModel &m, ClimateControlView &v) : model(m), view(v) {}
+
+    void showCurrentSettings()
+    {
+        view.displayCurrentSettings(model.getTemperature(), model.getAirStatus());
+    }
+
+    void updateTemperature()
+    {
+        int newTemperature = view.getUserTemperatureInput();
+        model.setTemperature(newTemperature);
+    }
+
+    void updateAirStatus()
+    {
+        bool newAirStatus = view.getUserAirStatusInput();
+        model.setAirStatus(newAirStatus);
+    }
+};
+
+int main()
+{
+    ClimateControlModel model;
+    ClimateControlView view;
+    ClimateControlPresenter presenter(model, view);
+
+    int choice;
+    do
+    {
+        cout << "\n1. Hiển thị thông tin điều hòa" << endl;
+        cout << "2. Điều chỉnh nhiệt độ" << endl;
+        cout << "3. Bật/Tắt điều hòa" << endl;
+        cout << "4. Thoát" << endl;
+        cout << "Nhập lựa chọn: ";
+        cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+            presenter.showCurrentSettings();
+            break;
+
+        case 2:
+            presenter.updateTemperature();
+            break;
+
+        case 3:
+            presenter.updateAirStatus();
+            break;
+
+        case 4:
+            cout << "Thoát chương trình." << endl;
+            break;
+
+        default:
+            cout << "Lựa chọn không hợp lệ!" << endl;
+        }
+
+    } while (choice != 4);
+
+    return 0;
+}
+```
+</p>
+</details>
+
+</p>
+</details>
