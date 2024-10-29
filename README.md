@@ -4626,3 +4626,120 @@ int main()
 
 </p>
 </details>
+
+# Bài 20: Smart Pointer 
+
+<details><summary>Chi tiết</summary>
+<p>
+
+
+*Bài này chỉ học để hiểu bản chất bên trong một smart pointer, bài sau mới học sử dụng thư viện memory*
+
+**Bản chất smart ponter không phải là một pointer mà là các class**
+
+Trong C++, smart pointers là một cơ chế quản lý bộ nhớ tự động giúp giảm thiểu rủi ro của lỗi liên quan đến quản lý bộ nhớ và giúp người lập trình tránh được việc quên giải phóng bộ nhớ đã được cấp phát
+
+Có 3 loại smart pointer phổ biến:
+
+- Unique pointer
+- Shared pointer
+- Weak pointer
+
+## Unique pointer
+Là một unique_ptr chỉ có thể sở hữu một đối tượng hoặc mảng và khi một unique_ptr bị hủy, bộ nhớ của đối tượng sẽ được tự động giải phóng
+
+```c++
+#include <iostream>
+
+using namespace std;
+
+template <typename T>
+class UniquePointer{
+    private:
+        T *ptr; // con trỏ quản lý bộ nhớ
+
+    public:
+        // constructor nhận vào 1 con trỏ thô
+        UniquePointer(T *p = nullptr): ptr(p){} // Đảm bảo địa chỉ của đối tượng truyền vào chỉ có duy nhất con trỏ ptr trỏ tới 
+
+        // destructor: giải phóng bộ nhớ khi đối tượng bị hủy
+        ~UniquePointer(){
+            if (ptr){
+                delete ptr;
+            }
+        }
+        /*
+         * địa chỉ uptr: 0xf4 - stack
+         * 
+         */
+
+        // xóa bỏ khả năng copy để đảm bảo chỉ có 1 pointer sở hữu object
+        UniquePointer(const UniquePointer&) = delete; //khi khởi tạo object mới sẽ không = object đã đc khởi tạo bằng delete
+
+        UniquePointer& operator = (const UniquePointer&) = delete; // không cho phép gán địa chỉ của 1 object cho object khác
+
+
+        // toán tử dereference (*) để truy cập giá trị, trả về địa chỉ của pointer
+        T& operator * () const{
+            return *ptr;
+        }
+
+        // toán tử -> để truy cập thành viên của con trỏ
+        T* operator -> () const{
+            return ptr;
+        }
+
+        // trả về con trỏ thô bên trong (nếu cần)
+        T* get() const{
+            return ptr;
+        }
+
+        // giải phóng quyền sở hữu và trả về con trỏ thô, không xóa đối tượng
+        T* release(){
+            T* temp = ptr;
+            ptr = nullptr;
+            return temp;
+        }
+
+        // thay thế con trỏ hiện tại bằng 1 con trỏ mới
+        void reset(T* p = nullptr){ // chuyển hướng đi đi của ptr
+            if (ptr){
+                delete ptr; // trc khi chuyển hướng thì phải thu hồi vùng nhớ ptr
+            }
+            ptr = p;
+        }
+};
+
+int main(int argc, char const *argv[])
+{
+    UniquePointer<int> uptr(new int(10));   // 0x01: 10
+    
+    UniquePointer<int> uptr2 = uptr;
+
+    // uptr2 = uptr;
+
+    // truy cập và in giá trị
+    cout << "value: " << *uptr << endl;
+
+    int* rawPtr = uptr.get();
+
+    cout << "giá trị con trỏ thô: " << *rawPtr << endl;
+
+    int* rawPtr1 = uptr.release();
+
+    delete rawPtr1;
+
+    // reset con trỏ với 1 giá trị mới
+    uptr.reset(new int(20));    // 0xa1: 20
+    cout << "new value: " << *uptr << endl;
+
+    uptr.reset();
+
+    // khi kết thúc chương trình, bộ nhớ sẽ được tự động giải phóng
+    return 0;
+}
+```
+</p>
+</details>
+
+
