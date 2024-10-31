@@ -4742,4 +4742,39 @@ int main(int argc, char const *argv[])
 </p>
 </details>
 
+# Bài 20: SMART POINTERS (thư viện memory)
+## So sánh các loại Smart Pointer 
+
+| Loại          | Quyền sở hữu         | Có thể sao chép   | Giải phóng bộ nhớ                  | Ứng dụng chính                                                                 |
+|---------------|----------------------|-------------------|------------------------------------|-------------------------------------------------------------------------------|
+| `unique_ptr`  | Duy nhất             | Không            | Khi `unique_ptr` bị hủy           | Quản lý tài nguyên độc quyền, không chia sẻ quyền sở hữu                       |
+| `shared_ptr`  | Chia sẻ              | Có               | Khi bộ đếm tham chiếu = 0         | Chia sẻ quyền sở hữu đối tượng giữa nhiều phần của chương trình                |
+| `weak_ptr`    | Quan sát (không sở hữu) | Không         | Dựa vào `shared_ptr`              | Tránh vòng tham chiếu với `shared_ptr`, sử dụng khi chỉ cần quan sát tài nguyên |
+
+## Giải thích các loại Smart Pointer
+
+- **`unique_ptr`**: 
+  - Bảo đảm quyền sở hữu duy nhất đối với một đối tượng.
+  - Phù hợp khi bạn không cần chia sẻ quyền sở hữu đối tượng với bất kỳ ai khác.
+  - Ví dụ: `std::unique_ptr<int> ptr = std::make_unique<int>(10);`
+
+- **`shared_ptr`**: 
+  - Cho phép chia sẻ quyền sở hữu đối tượng giữa nhiều smart pointer bằng cách sử dụng cơ chế đếm tham chiếu.
+  - Khi tất cả các `shared_ptr` trỏ đến đối tượng bị hủy, đối tượng sẽ được tự động giải phóng.
+  - Ví dụ: 
+    ```cpp
+    std::shared_ptr<int> ptr1 = std::make_shared<int>(10);
+    std::shared_ptr<int> ptr2 = ptr1; // Tăng bộ đếm tham chiếu lên 2
+    ```
+
+- **`weak_ptr`**:
+  - `weak_ptr` không sở hữu đối tượng mà chỉ "quan sát" đối tượng được quản lý bởi `shared_ptr`.
+  - Thường được sử dụng để tránh vòng tham chiếu giữa các `shared_ptr`.
+  - Ví dụ:
+    ```cpp
+    std::shared_ptr<int> sharedPtr = std::make_shared<int>(10);
+    std::weak_ptr<int> weakPtr = sharedPtr; // Không tăng bộ đếm tham chiếu
+    ```
+
+
 
