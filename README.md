@@ -4743,6 +4743,10 @@ int main(int argc, char const *argv[])
 </details>
 
 # Bài 20: SMART POINTERS (thư viện memory)
+
+<details><summary>Chi tiết</summary>
+<p>
+
 ## So sánh các loại Smart Pointer 
 
 | Loại          | Quyền sở hữu         | Có thể sao chép   | Giải phóng bộ nhớ                  | Ứng dụng chính                                                                 |
@@ -4777,4 +4781,5 @@ int main(int argc, char const *argv[])
     ```
 
 
-
+</p>
+</details>
