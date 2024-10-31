@@ -4758,13 +4758,13 @@ int main(int argc, char const *argv[])
 ## Giải thích các loại Smart Pointer
 
 - **`unique_ptr`**: 
-  - Bảo đảm quyền sở hữu duy nhất đối với một đối tượng.
+  - Bảo đảm vùng nhớ chỉ có duy nhất một con trỏ quản lý
   - Phù hợp khi bạn không cần chia sẻ quyền sở hữu đối tượng với bất kỳ ai khác.
   - Ví dụ: `std::unique_ptr<int> ptr = std::make_unique<int>(10);`
 
 - **`shared_ptr`**: 
-  - Cho phép chia sẻ quyền sở hữu đối tượng giữa nhiều smart pointer bằng cách sử dụng cơ chế đếm tham chiếu.
-  - Khi tất cả các `shared_ptr` trỏ đến đối tượng bị hủy, đối tượng sẽ được tự động giải phóng.
+  - Cho phép vùng nhớ có nhiều con trỏ quản lý
+  - Vùng nhớ sẽ bị thu hồi khi không còn `shared_ptr` quản lý
   - Ví dụ: 
     ```cpp
     std::shared_ptr<int> ptr1 = std::make_shared<int>(10);
@@ -4783,3 +4783,22 @@ int main(int argc, char const *argv[])
 
 </p>
 </details>
+
+# Bài 21: Multithreading
+## Process
+là một chương trình đang chạy trên máy tính hoặc đang chạy trên hệ thống và sẽ tập hợp nhiều tác vụ khác nhau , các chương trình sẽ có bộ nhớ riêng 
+
+## thread
+là thread (luồng) thực thi độc lập của process và đơn vị nhỏ hơn process, 1 process có thể chứa nhiều thread
+
+## Quản lý các thread
+### join
+là method sử dụng để chờ cho 1 luồng kết thúc trước khi chương trình chính hoặc luồng khác tiếp tục
+### Detach
+Tách luồng khỏi luồng chính, luồng sẽ chạy độc lập
+
+### joinable
+kiểm tra xem 1 luồng đã kết thúc hay chưa hoặc đã được gọi ra method join hay chưa. Nếu chưa gọi method join hoặc luồng chưa kết thúc thì joinable sẽ trả về true và ngược lại sẽ trả về false
+
+## Đồng bộ hóa
+### mutex
