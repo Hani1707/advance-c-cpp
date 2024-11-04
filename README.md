@@ -4785,6 +4785,10 @@ int main(int argc, char const *argv[])
 </details>
 
 # Bài 21: Multithreading
+
+<details><summary>Chi tiết</summary>
+<p>
+
 ## Process
 là một chương trình đang chạy trên máy tính hoặc đang chạy trên hệ thống và sẽ tập hợp nhiều tác vụ khác nhau , các chương trình sẽ có bộ nhớ riêng 
 
@@ -4802,3 +4806,6 @@ kiểm tra xem 1 luồng đã kết thúc hay chưa hoặc đã được gọi r
 
 ## Đồng bộ hóa
 ### mutex
+
+</p>
+</details>
